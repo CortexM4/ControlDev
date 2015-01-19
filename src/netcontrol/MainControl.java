@@ -15,18 +15,19 @@ import java.util.logging.Logger;
 public class MainControl {
 
     private static final Logger log = Logger.getLogger(MainControl.class.getName());
-    
+      
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
-        
+
         try {
         NetworkControl net = new NetworkControl();
+        net.start();
         int i = 0;
         while(true) {
             Thread.sleep(1000);
-            System.out.print("Sec:" +i+ " ");
+            System.out.print("Sec:"+ i+ " ");
             i++;
         }
         }

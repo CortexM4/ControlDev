@@ -11,6 +11,7 @@ package netcontrol;
  */
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -29,14 +30,18 @@ public class NetworkControl implements Runnable {
     private static final int                ERROR_CMD       = 0;
     private static final int                TEST_CONNECTION = 1;
     private static final int                TEST_ACCEPT = 1;
+    private static final int                PLAY_SOUND = 2;
 
     public NetworkControl() throws IOException {                // Разобраться с параметрами
         server = new ServerSocket(4444);
         serverThread = new Thread(this, "NetworkControl");
+    }
+    
+    public void start() {
         serverThread.start();
         System.out.println("Thread started");
     }
-
+    
     private void ListenSocket() {
         BufferedReader inStream = null;
         DataOutputStream outStream = null;
@@ -51,7 +56,15 @@ public class NetworkControl implements Runnable {
             requestAction = inStream.read();
             
             switch(requestAction) {
-                case TEST_CONNECTION : outStream.write(TEST_ACCEPT);            // Присутствует ли устройство в сети
+                case TEST_CONNECTION :
+                    outStream.write(TEST_ACCEPT);            // Присутствует ли устройство в сети
+                    break;
+                case PLAY_SOUND : 
+                    Sound snd = new Sound(new File("gamestart.wav"));
+                    outStream.write(TEST_ACCEPT);
+                    snd.play();
+                    snd.join();
+                    break;
                 default : outStream.write(ERROR_CMD);
             }
             
