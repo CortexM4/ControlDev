@@ -22,18 +22,20 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *
  * @author Crtx
  */
-public class Sound {
+public class Sound implements Runnable {
 
     private static final Logger log = Logger.getLogger(Sound.class.getName());
 
     private boolean stat_load = false;                          // Успешно ли открыт поток
     private boolean stat_play = false;                          // Играет ли сейчас что-либо
 
+    private final Thread                    soundThread;
     FloatControl volume;
     Clip clip;
 
     public Sound(File file) {
 
+        soundThread = new Thread(this, "SoundThread");
         try {
             AudioInputStream stream = AudioSystem.getAudioInputStream(file);       // Тут может быть не файл, а поток. Это надо проработать.
             clip = AudioSystem.getClip();
@@ -48,6 +50,10 @@ public class Sound {
         }
     }
 
+    public void play() {
+        soundThread.start();
+        log.info("SoundThread started");
+    }
     public void setVolume(float vol) {
         float maxVol = volume.getMaximum();
         float minVol = volume.getMinimum();
@@ -84,8 +90,9 @@ public class Sound {
         }
     }
 
-    public void play() {
-        play(true);
+    @Override
+    public void run() {
+       play(true); 
     }
 
     //Дожидается окончания проигрывания звука

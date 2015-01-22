@@ -39,7 +39,7 @@ public class NetworkControl implements Runnable {
     
     public void start() {
         serverThread.start();
-        System.out.println("Thread started");
+        log.info("Thread started");
     }
     
     private void ListenSocket() {
@@ -63,7 +63,6 @@ public class NetworkControl implements Runnable {
                     Sound snd = new Sound(new File("gamestart.wav"));
                     outStream.write(TEST_ACCEPT);
                     snd.play();
-                    snd.join();
                     break;
                 default : outStream.write(ERROR_CMD);
             }
