@@ -6,6 +6,7 @@
 package netcontrol;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,11 +27,11 @@ public class Sound implements Runnable {
 
     private static final Logger log = Logger.getLogger(Sound.class.getName());
 
-    private boolean stat_load = false;                          // Успешно ли открыт поток
-    private boolean stat_play = false;                          // Играет ли сейчас что-либо
+    private boolean isLoaded = false;                          // Успешно ли открыт поток
+    private boolean isPlaying = false;                          // Играет ли сейчас что-либо
 
-    private final Thread                    soundThread;
-    FloatControl volume;
+    private final Thread soundThread;
+    static FloatControl volume;
     Clip clip;
 
     public Sound(File file) {
@@ -42,25 +43,47 @@ public class Sound implements Runnable {
             clip.open(stream);
             clip.addLineListener(new Listener());
             volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            stat_load = true;
+            isLoaded = true;
 
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
-            stat_load = false;
+            isLoaded = false;
+            log.log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public Sound(InputStream strm) {
+
+        soundThread = new Thread(this, "SoundThread");
+        try {
+            AudioInputStream stream = AudioSystem.getAudioInputStream(strm);       // Тут может быть не файл, а поток. Это надо проработать.
+            clip = AudioSystem.getClip();
+            clip.open(stream);
+            clip.addLineListener(new Listener());
+            volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            isLoaded = true;
+
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
+            isLoaded = false;
             log.log(Level.SEVERE, null, ex);
         }
     }
 
     public void play() {
-        soundThread.start();
+        soundThread.start(); 
         log.info("SoundThread started");
     }
-    public void setVolume(float vol) {
+    public void setVolume(float vol) {              // Про увеличение громкости 
+        if(vol<0.0)                                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
+            vol=(float) 0.0;
+        else if(vol>1.0)
+            vol=(float) 1.0;
+        
         float maxVol = volume.getMaximum();
         float minVol = volume.getMinimum();
         volume.setValue(minVol + (maxVol - minVol) * vol);
     }
 
-    public float getVolume() {
+    public static float getVolume() {
         float v = volume.getValue();
         float min = volume.getMinimum();
         float max = volume.getMaximum();
@@ -69,25 +92,26 @@ public class Sound implements Runnable {
 
     /* reload указывает играть ли сначало */
     private void play(boolean reload) {
-        if (stat_load) {
+        if (isLoaded) {
             if (reload) {
                 clip.stop();
                 clip.setFramePosition(0);
                 clip.start();
-                stat_play = true;
+                isPlaying = true;
             }
-            if (!stat_play) {
+            if (!isPlaying) {
                 clip.setFramePosition(0);
                 clip.start();
-                stat_play = true;
+                isPlaying = true;
             }
         }
     }
 
     public void stop() {
-        if (stat_play) {
+        if (isPlaying) {
             clip.stop();
         }
+        clip.close();
     }
 
     @Override
@@ -96,16 +120,17 @@ public class Sound implements Runnable {
     }
 
     //Дожидается окончания проигрывания звука
-    public void join() {
-        if (!stat_load) {
-            return;
+    public void join() {                                // Пока еще не понятна применимоасть этого join'a
+        if (!isLoaded) {                               // т.к. процесс запуска и останова возлагается 
+            return;                                     // на сам класс Sound
         }
         synchronized (clip) {
             try {
-                while (stat_play) {
+                while (isPlaying) {
                     clip.wait();
                 }
             } catch (InterruptedException ex) {
+                log.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -115,9 +140,10 @@ public class Sound implements Runnable {
         @Override
         public void update(LineEvent ev) {
             if (ev.getType() == LineEvent.Type.STOP) {
-                stat_play = false;
+                isPlaying = false;
                 synchronized (clip) {
-                    clip.notify();
+                    clip.notify();                      // Соответственно, целесообразность этого уведомдения тоже под вопросом
+                    stop();
                 }
             }
         }

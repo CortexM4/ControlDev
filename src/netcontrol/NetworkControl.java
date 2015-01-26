@@ -9,11 +9,13 @@ package netcontrol;
  *
  * @author Crtx
  */
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -31,6 +33,8 @@ public class NetworkControl implements Runnable {
     private static final int                TEST_CONNECTION = 1;
     private static final int                TEST_ACCEPT = 1;
     private static final int                PLAY_SOUND = 2;
+    private static final int                SET_VOLUME = 3;
+    private static final int                GET_VOLUME = 4;
 
     public NetworkControl() throws IOException {                // Разобраться с параметрами
         server = new ServerSocket(4444);
@@ -56,13 +60,23 @@ public class NetworkControl implements Runnable {
             requestAction = inStream.read();
             
             switch(requestAction) {
-                case TEST_CONNECTION :
-                    outStream.write(TEST_ACCEPT);            // Присутствует ли устройство в сети
+                case TEST_CONNECTION :                                  // Присутствует ли устройство в сети
+                    outStream.write(TEST_ACCEPT);            
                     break;
-                case PLAY_SOUND : 
-                    Sound snd = new Sound(new File("gamestart.wav"));
-                    outStream.write(TEST_ACCEPT);
+                case PLAY_SOUND :                                       // Проигрывание звука
+                    //Sound snd = new Sound(new File("gamestart.wav"));
+                    InputStream audioSrc = clientConnection.getInputStream();
+                    //add buffer for mark/reset support
+                    InputStream bufferedIn = new BufferedInputStream(audioSrc);
+                    Sound snd = new Sound(bufferedIn);
+                    snd.setVolume((float) 0.6);
                     snd.play();
+                    outStream.write(PLAY_SOUND);
+                    break;
+                case GET_VOLUME :
+                    float vol = Sound.getVolume();
+                    int bits = Float.floatToRawIntBits(vol);
+                    outStream.writeInt(bits);
                     break;
                 default : outStream.write(ERROR_CMD);
             }
