@@ -18,6 +18,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -47,14 +52,15 @@ public class NetworkControl implements Runnable {
     }
     
     private void ListenSocket() {
-        BufferedReader inStream = null;
+        InputStream inStream = null;
         DataOutputStream outStream = null;
         int requestAction;
         try {
             System.out.println("Wait client");
             clientConnection = server.accept();
             
-            inStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
+            //inStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
+            inStream = clientConnection.getInputStream();
             outStream = new DataOutputStream(clientConnection.getOutputStream());
             
             requestAction = inStream.read();
@@ -64,20 +70,26 @@ public class NetworkControl implements Runnable {
                     outStream.write(TEST_ACCEPT);            
                     break;
                 case PLAY_SOUND :                                       // Проигрывание звука
-                    //Sound snd = new Sound(new File("gamestart.wav"));
-                    InputStream audioSrc = clientConnection.getInputStream();
-                    //add buffer for mark/reset support
-                    InputStream bufferedIn = new BufferedInputStream(audioSrc);
-                    Sound snd = new Sound(bufferedIn);
+//                    Sound snd = new Sound(new File("gamestart.wav"));
+                    //BufferedInputStream bufferedIn = new BufferedInputStream(strm);
+                    Sound snd = new Sound(clientConnection.getInputStream());
                     snd.setVolume((float) 0.6);
                     snd.play();
                     outStream.write(PLAY_SOUND);
                     break;
                 case GET_VOLUME :
                     float vol = Sound.getVolume();
-                    int bits = Float.floatToRawIntBits(vol);
-                    outStream.writeInt(bits);
+                    int svol = Float.floatToIntBits(vol);
+                    outStream.writeInt(svol);
                     break;
+                case SET_VOLUME:
+                    byte[] volu = new byte[4];
+                    inStream.read(volu);
+                    int volm = ByteBuffer.wrap(volu).getInt();
+                    float set_vol = Float.intBitsToFloat(volm);
+                    Sound.setVolume(set_vol);
+                    break;
+                    
                 default : outStream.write(ERROR_CMD);
             }
             
@@ -88,6 +100,16 @@ public class NetworkControl implements Runnable {
             log.log(Level.SEVERE, null, e);
         }
     }
+    
+    private byte[] toBytes(char[] chars) {
+    CharBuffer charBuffer = CharBuffer.wrap(chars);
+    ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(charBuffer);
+    byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
+            byteBuffer.position(), byteBuffer.limit());
+    Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
+    Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
+    return bytes;
+}
 
     @Override
     public void run() {

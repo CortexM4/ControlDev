@@ -5,6 +5,7 @@
  */
 package netcontrol;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class Sound implements Runnable {
 
         soundThread = new Thread(this, "SoundThread");
         try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(file);       // Тут может быть не файл, а поток. Это надо проработать.
+            AudioInputStream stream = AudioSystem.getAudioInputStream(file);      
             clip = AudioSystem.getClip();
             clip.open(stream);
             clip.addLineListener(new Listener());
@@ -55,7 +56,8 @@ public class Sound implements Runnable {
 
         soundThread = new Thread(this, "SoundThread");
         try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(strm);       // Тут может быть не файл, а поток. Это надо проработать.
+            BufferedInputStream bufferedIn = new BufferedInputStream(strm); 
+            AudioInputStream stream = AudioSystem.getAudioInputStream(bufferedIn);
             clip = AudioSystem.getClip();
             clip.open(stream);
             clip.addLineListener(new Listener());
@@ -72,7 +74,7 @@ public class Sound implements Runnable {
         soundThread.start(); 
         log.info("SoundThread started");
     }
-    public void setVolume(float vol) {              // Про увеличение громкости 
+    public static void setVolume(float vol) {              // Про увеличение громкости 
         if(vol<0.0)                                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
             vol=(float) 0.0;
         else if(vol>1.0)
