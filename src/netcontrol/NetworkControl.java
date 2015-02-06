@@ -9,30 +9,26 @@ package netcontrol;
  *
  * @author Crtx
  */
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import netcontrol.DeviceStateProtos.DeviceState;
 
-public class NetworkControl implements Runnable {
+public class NetworkControl {
 
     private static final Logger log = Logger.getLogger(NetworkControl.class.getName());
 
-    private final Thread                    serverThread;
-    private final ServerSocket              server;
-    private Socket                          clientConnection;
+    private ServerSocket              server;
+    private Socket                    clientConnection;
+    
 
     private static final int                ERROR_CMD       = 0;
     private static final int                TEST_CONNECTION = 1;
@@ -41,22 +37,48 @@ public class NetworkControl implements Runnable {
     private static final int                SET_VOLUME = 3;
     private static final int                GET_VOLUME = 4;
 
-    public NetworkControl() throws IOException {                // Разобраться с параметрами
+    public static void main(String[] args) throws InterruptedException, IOException {
+
+        DeviceState.Builder device = DeviceState.newBuilder();
+      /*  try {
+            device.mergeFrom(new FileInputStream("123.txt"));
+        } catch (FileNotFoundException  e) {
+            System.out.println(args[0] + ": File not found.  Creating a new file.");
+        }*/
+        
+        device.setSound(0.1F);
+        device.setPower(true);
+        
+        FileOutputStream output = new FileOutputStream("123.txt");
+        
+        device.build().writeTo(output);
+        output.close();
+        
+      /*  NetworkControl net;
+        net = new NetworkControl();
+        
+        
+        while (true) {
+            net.ListenSocket();
+        }*/
+    }
+    
+    public NetworkControl() {                
+        try {
         server = new ServerSocket(4444);
-        serverThread = new Thread(this, "NetworkControl");
+        log.info("Server started");
+        } catch (IOException ex) {
+            Logger.getLogger(NetworkControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public void start() {
-        serverThread.start();
-        log.info("Thread started");
-    }
-    
+    /* !!!!!!!!!!!!!!Очень нужны таймауты!!!!!!!!!!!! */
     private void ListenSocket() {
         InputStream inStream = null;
         DataOutputStream outStream = null;
         int requestAction;
         try {
-            System.out.println("Wait client");
+            log.info("Wait client");
             clientConnection = server.accept();
             
             //inStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
@@ -64,6 +86,8 @@ public class NetworkControl implements Runnable {
             outStream = new DataOutputStream(clientConnection.getOutputStream());
             
             requestAction = inStream.read();
+            
+            log.info("Client cmd:"+ requestAction);
             
             switch(requestAction) {
                 case TEST_CONNECTION :                                  // Присутствует ли устройство в сети
@@ -73,7 +97,7 @@ public class NetworkControl implements Runnable {
 //                    Sound snd = new Sound(new File("gamestart.wav"));
                     //BufferedInputStream bufferedIn = new BufferedInputStream(strm);
                     Sound snd = new Sound(clientConnection.getInputStream());
-                    snd.setVolume((float) 0.6);
+                    snd.setVolume((float) 0.6);     // Проверять, если объект не создался!!!!!!!!!!
                     snd.play();
                     outStream.write(PLAY_SOUND);
                     break;
@@ -93,28 +117,10 @@ public class NetworkControl implements Runnable {
                 default : outStream.write(ERROR_CMD);
             }
             
-            System.out.println("Socket close");
             clientConnection.close();
             
         } catch (IOException e) {
             log.log(Level.SEVERE, null, e);
-        }
-    }
-    
-    private byte[] toBytes(char[] chars) {
-    CharBuffer charBuffer = CharBuffer.wrap(chars);
-    ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(charBuffer);
-    byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
-            byteBuffer.position(), byteBuffer.limit());
-    Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
-    Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
-    return bytes;
-}
-
-    @Override
-    public void run() {
-        while (!Thread.interrupted()) {
-            ListenSocket();
         }
     }
 }
