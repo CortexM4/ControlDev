@@ -32,9 +32,14 @@ public class Sound implements Runnable {
     private boolean isPlaying = false;                          // Играет ли сейчас что-либо
 
     private final Thread soundThread;
-    static FloatControl volume;
-    Clip clip;
+    static FloatControl gainControl;
+    static Clip clip;
 
+    public static void Sound(String path){
+        File file = new File(path);
+        Sound snd = new Sound(file);
+        snd.play();
+    }
     public Sound(File file) {
 
         soundThread = new Thread(this, "SoundThread");
@@ -43,7 +48,7 @@ public class Sound implements Runnable {
             clip = AudioSystem.getClip();
             clip.open(stream);
             clip.addLineListener(new Listener());
-            volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             isLoaded = true;
 
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
@@ -61,7 +66,7 @@ public class Sound implements Runnable {
             clip = AudioSystem.getClip();
             clip.open(stream);
             clip.addLineListener(new Listener());
-            volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             isLoaded = true;
 
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
@@ -74,22 +79,27 @@ public class Sound implements Runnable {
         soundThread.start(); 
         log.info("SoundThread started");
     }
-    public static void setVolume(float vol) {              // Про увеличение громкости 
-        if(vol<0.0)                                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
-            vol=(float) 0.0;
-        else if(vol>1.0)
-            vol=(float) 1.0;
+    public static void setVolume(float gain) {       // Про увеличение громкости 
+        if(gain<0.0)                                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
+            gain=0.0F;
+        else if(gain>1.0)
+            gain=1.0F;
         
-        float maxVol = volume.getMaximum();
-        float minVol = volume.getMinimum();
-        volume.setValue(minVol + (maxVol - minVol) * vol);
+        float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+        gainControl.setValue(dB);
+   //     float maxVol = gainControl.getMaximum();
+   //     float minVol = gainControl.getMinimum();
+   //     gainControl.setValue(minVol + (maxVol - minVol) * gain);
     }
 
     public static float getVolume() {
-        float v = volume.getValue();
-        float min = volume.getMinimum();
-        float max = volume.getMaximum();
-        return (v - min) / (max - min);
+        float dB = gainControl.getValue();
+        float gain = (float) (Math.exp(dB / 20.0 * Math.log(10.0)));
+//       float gain = (float) (dB * 20.0 * Math.log(10.0));
+ //       float min = gainControl.getMinimum();
+ //       float max = gainControl.getMaximum();
+ //       return (v - min) / (max - min);
+        return gain;
     }
 
     /* reload указывает играть ли сначало */

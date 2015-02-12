@@ -10,17 +10,15 @@ package netcontrol;
  * @author Crtx
  */
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import netcontrol.DeviceStateProtos.DeviceState;
+import javax.sound.sampled.LineUnavailableException;
+import netcontrol.Commands.BaseCommands;
 
 public class NetworkControl {
 
@@ -28,6 +26,7 @@ public class NetworkControl {
 
     private ServerSocket              server;
     private Socket                    clientConnection;
+    private int                       port = 4444;
     
 
     private static final int                ERROR_CMD       = 0;
@@ -37,35 +36,22 @@ public class NetworkControl {
     private static final int                SET_VOLUME = 3;
     private static final int                GET_VOLUME = 4;
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException, LineUnavailableException {
 
-        DeviceState.Builder device = DeviceState.newBuilder();
-      /*  try {
-            device.mergeFrom(new FileInputStream("123.txt"));
-        } catch (FileNotFoundException  e) {
-            System.out.println(args[0] + ": File not found.  Creating a new file.");
-        }*/
-        
-        device.setSound(0.1F);
-        device.setPower(true);
-        
-        FileOutputStream output = new FileOutputStream("123.txt");
-        
-        device.build().writeTo(output);
-        output.close();
-        
-      /*  NetworkControl net;
+        NetworkControl net;
         net = new NetworkControl();
         
-        
+        /**********Инициализация начальных параметров************/
+        Sound.Sound("files.wav");   // Проигрывание начального звука для инициализации Clip
+         
         while (true) {
             net.ListenSocket();
-        }*/
+        }
     }
     
     public NetworkControl() {                
         try {
-        server = new ServerSocket(4444);
+        server = new ServerSocket(port);
         log.info("Server started");
         } catch (IOException ex) {
             Logger.getLogger(NetworkControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,44 +61,47 @@ public class NetworkControl {
     /* !!!!!!!!!!!!!!Очень нужны таймауты!!!!!!!!!!!! */
     private void ListenSocket() {
         InputStream inStream = null;
-        DataOutputStream outStream = null;
-        int requestAction;
+        OutputStream outStream = null;
+        BaseCommands packet;
+        BaseCommands.Builder packet_return = BaseCommands.newBuilder();
         try {
             log.info("Wait client");
             clientConnection = server.accept();
             
             //inStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
             inStream = clientConnection.getInputStream();
-            outStream = new DataOutputStream(clientConnection.getOutputStream());
+            packet = BaseCommands.parseFrom(inStream);
+            outStream = new DataOutputStream(clientConnection.getOutputStream());    
             
-            requestAction = inStream.read();
             
-            log.info("Client cmd:"+ requestAction);
-            
-            switch(requestAction) {
-                case TEST_CONNECTION :                                  // Присутствует ли устройство в сети
-                    outStream.write(TEST_ACCEPT);            
+            switch(packet.getType()) {
+                case DEVICE_STATE :                                  // Обработка общих параметров устройства
+                    log.info("Command: DEVICE_STATE");
+                    DeviceStateProcess dsp = new DeviceStateProcess(packet.getDeviceState());
+                    packet_return.setDeviceState(dsp.GetAllValue());
+                    packet_return.setType(BaseCommands.Type.DEVICE_STATE);
+                    packet_return.build().writeTo(outStream);
                     break;
-                case PLAY_SOUND :                                       // Проигрывание звука
+//                case PLAY_SOUND :                                       // Проигрывание звука
 //                    Sound snd = new Sound(new File("gamestart.wav"));
                     //BufferedInputStream bufferedIn = new BufferedInputStream(strm);
-                    Sound snd = new Sound(clientConnection.getInputStream());
-                    snd.setVolume((float) 0.6);     // Проверять, если объект не создался!!!!!!!!!!
-                    snd.play();
-                    outStream.write(PLAY_SOUND);
-                    break;
-                case GET_VOLUME :
-                    float vol = Sound.getVolume();
-                    int svol = Float.floatToIntBits(vol);
-                    outStream.writeInt(svol);
-                    break;
-                case SET_VOLUME:
-                    byte[] volu = new byte[4];
-                    inStream.read(volu);
-                    int volm = ByteBuffer.wrap(volu).getInt();
-                    float set_vol = Float.intBitsToFloat(volm);
-                    Sound.setVolume(set_vol);
-                    break;
+//                    Sound snd = new Sound(clientConnection.getInputStream());
+//                    snd.setVolume((float) 0.6);     // Проверять, если объект не создался!!!!!!!!!!
+//                    snd.play();
+//                    outStream.write(PLAY_SOUND);
+//                    break;
+//                case GET_VOLUME :
+//                    float vol = Sound.getVolume();
+//                    int svol = Float.floatToIntBits(vol);
+//                    outStream.writeInt(svol);
+//                    break;
+//                case SET_VOLUME:
+//                    byte[] volu = new byte[4];
+//                    inStream.read(volu);
+//                    int volm = ByteBuffer.wrap(volu).getInt();
+//                    float set_vol = Float.intBitsToFloat(volm);
+//                    Sound.setVolume(set_vol);
+//                    break;
                     
                 default : outStream.write(ERROR_CMD);
             }

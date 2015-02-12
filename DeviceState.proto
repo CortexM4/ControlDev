@@ -1,7 +1,0 @@
-package netcontrol;
-option java_outer_classname = "DeviceStateProtos";
-
-message DeviceState {
-	optional float sound = 1;
-	optional bool power = 2;
-}

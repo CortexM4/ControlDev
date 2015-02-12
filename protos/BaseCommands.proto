@@ -1,0 +1,15 @@
+package netcontrol;
+option java_outer_classname = "Commands";
+
+message BaseCommands {
+	enum Type { DEVICE_STATE = 1; }
+	required Type type = 1;
+	optional DeviceState deviceState = 2;
+}
+
+message DeviceState {
+	enum Direction { READ = 1; WRITE=2; }		// Устанавливает направление пакета записать/считать значения
+	required Direction type = 1;
+	optional float sound = 2;
+	optional bool power = 3 [default = true];
+}
