@@ -9,6 +9,7 @@ package netcontrol;
  *
  * @author Crtx
  */
+import com.google.protobuf.CodedInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,11 +31,6 @@ public class NetworkControl {
     
 
     private static final int                ERROR_CMD       = 0;
-    private static final int                TEST_CONNECTION = 1;
-    private static final int                TEST_ACCEPT = 1;
-    private static final int                PLAY_SOUND = 2;
-    private static final int                SET_VOLUME = 3;
-    private static final int                GET_VOLUME = 4;
 
     public static void main(String[] args) throws InterruptedException, IOException, LineUnavailableException {
 
@@ -60,18 +56,20 @@ public class NetworkControl {
     
     /* !!!!!!!!!!!!!!Очень нужны таймауты!!!!!!!!!!!! */
     private void ListenSocket() {
-        InputStream inStream = null;
-        OutputStream outStream = null;
+        byte[] bytes      = new byte[1024];
         BaseCommands packet;
         BaseCommands.Builder packet_return = BaseCommands.newBuilder();
         try {
             log.info("Wait client");
             clientConnection = server.accept();
-            
+ 
             //inStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-            inStream = clientConnection.getInputStream();
-            packet = BaseCommands.parseFrom(inStream);
-            outStream = new DataOutputStream(clientConnection.getOutputStream());    
+            InputStream inStream = clientConnection.getInputStream();
+            
+            int  bytesRead = inStream.read(bytes);                                          
+            CodedInputStream stream = CodedInputStream.newInstance(bytes, 0, bytesRead);    // Тут гребаная магия, т.к. parseFrom если принимает InputStream
+            packet = BaseCommands.parseFrom(stream);                                        // то надо разорвать соединение, чтобы он отпустил, иначе висит в ожидании.
+            OutputStream outStream = new DataOutputStream(clientConnection.getOutputStream());    
             
             
             switch(packet.getType()) {
@@ -82,7 +80,8 @@ public class NetworkControl {
                     packet_return.setType(BaseCommands.Type.DEVICE_STATE);
                     packet_return.build().writeTo(outStream);
                     break;
-//                case PLAY_SOUND :                                       // Проигрывание звука
+                case STREAM_SOUND :                                       // Проигрывание звука
+                    log.info("Command: STREAM_SOUND");
 //                    Sound snd = new Sound(new File("gamestart.wav"));
                     //BufferedInputStream bufferedIn = new BufferedInputStream(strm);
 //                    Sound snd = new Sound(clientConnection.getInputStream());

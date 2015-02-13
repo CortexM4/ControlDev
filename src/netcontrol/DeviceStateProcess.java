@@ -20,12 +20,18 @@ public class DeviceStateProcess {
     DeviceStateProcess(DeviceState deviceState) throws IOException{
         switch(deviceState.getType()) {
             case WRITE :
-                power = deviceState.getPower();
-                gain = deviceState.getSound();
-                Sound.setVolume(gain);
-            break;
+                if(deviceState.hasPower()){
+                    power = deviceState.getPower();
+                }
+                if(deviceState.hasSound()) {
+                    gain = deviceState.getSound();
+                    Sound.setVolume(gain);
+                }
+                break;
+            case READ:
+                break;
             default :  
-                throw new IOException("Device state ");
+                throw new IOException("Device state: unknown command");
         }
     }
     

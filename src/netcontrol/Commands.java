@@ -33,6 +33,19 @@ public final class Commands {
      * <code>optional .netcontrol.DeviceState deviceState = 2;</code>
      */
     netcontrol.Commands.DeviceStateOrBuilder getDeviceStateOrBuilder();
+
+    /**
+     * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+     */
+    boolean hasStreamSound();
+    /**
+     * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+     */
+    netcontrol.Commands.StreamSound getStreamSound();
+    /**
+     * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+     */
+    netcontrol.Commands.StreamSoundOrBuilder getStreamSoundOrBuilder();
   }
   /**
    * Protobuf type {@code netcontrol.BaseCommands}
@@ -110,6 +123,19 @@ public final class Commands {
               bitField0_ |= 0x00000002;
               break;
             }
+            case 26: {
+              netcontrol.Commands.StreamSound.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = streamSound_.toBuilder();
+              }
+              streamSound_ = input.readMessage(netcontrol.Commands.StreamSound.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(streamSound_);
+                streamSound_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -158,12 +184,20 @@ public final class Commands {
        * <code>DEVICE_STATE = 1;</code>
        */
       DEVICE_STATE(0, 1),
+      /**
+       * <code>STREAM_SOUND = 2;</code>
+       */
+      STREAM_SOUND(1, 2),
       ;
 
       /**
        * <code>DEVICE_STATE = 1;</code>
        */
       public static final int DEVICE_STATE_VALUE = 1;
+      /**
+       * <code>STREAM_SOUND = 2;</code>
+       */
+      public static final int STREAM_SOUND_VALUE = 2;
 
 
       public final int getNumber() { return value; }
@@ -171,6 +205,7 @@ public final class Commands {
       public static Type valueOf(int value) {
         switch (value) {
           case 1: return DEVICE_STATE;
+          case 2: return STREAM_SOUND;
           default: return null;
         }
       }
@@ -259,9 +294,31 @@ public final class Commands {
       return deviceState_;
     }
 
+    public static final int STREAMSOUND_FIELD_NUMBER = 3;
+    private netcontrol.Commands.StreamSound streamSound_;
+    /**
+     * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+     */
+    public boolean hasStreamSound() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+     */
+    public netcontrol.Commands.StreamSound getStreamSound() {
+      return streamSound_;
+    }
+    /**
+     * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+     */
+    public netcontrol.Commands.StreamSoundOrBuilder getStreamSoundOrBuilder() {
+      return streamSound_;
+    }
+
     private void initFields() {
       type_ = netcontrol.Commands.BaseCommands.Type.DEVICE_STATE;
       deviceState_ = netcontrol.Commands.DeviceState.getDefaultInstance();
+      streamSound_ = netcontrol.Commands.StreamSound.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -279,6 +336,12 @@ public final class Commands {
           return false;
         }
       }
+      if (hasStreamSound()) {
+        if (!getStreamSound().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -291,6 +354,9 @@ public final class Commands {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(2, deviceState_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, streamSound_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -308,6 +374,10 @@ public final class Commands {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, deviceState_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, streamSound_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -419,6 +489,7 @@ public final class Commands {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getDeviceStateFieldBuilder();
+          getStreamSoundFieldBuilder();
         }
       }
       private static Builder create() {
@@ -435,6 +506,12 @@ public final class Commands {
           deviceStateBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
+        if (streamSoundBuilder_ == null) {
+          streamSound_ = netcontrol.Commands.StreamSound.getDefaultInstance();
+        } else {
+          streamSoundBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -475,6 +552,14 @@ public final class Commands {
         } else {
           result.deviceState_ = deviceStateBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (streamSoundBuilder_ == null) {
+          result.streamSound_ = streamSound_;
+        } else {
+          result.streamSound_ = streamSoundBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -497,6 +582,9 @@ public final class Commands {
         if (other.hasDeviceState()) {
           mergeDeviceState(other.getDeviceState());
         }
+        if (other.hasStreamSound()) {
+          mergeStreamSound(other.getStreamSound());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -508,6 +596,12 @@ public final class Commands {
         }
         if (hasDeviceState()) {
           if (!getDeviceState().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasStreamSound()) {
+          if (!getStreamSound().isInitialized()) {
             
             return false;
           }
@@ -685,6 +779,122 @@ public final class Commands {
         return deviceStateBuilder_;
       }
 
+      private netcontrol.Commands.StreamSound streamSound_ = netcontrol.Commands.StreamSound.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          netcontrol.Commands.StreamSound, netcontrol.Commands.StreamSound.Builder, netcontrol.Commands.StreamSoundOrBuilder> streamSoundBuilder_;
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public boolean hasStreamSound() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public netcontrol.Commands.StreamSound getStreamSound() {
+        if (streamSoundBuilder_ == null) {
+          return streamSound_;
+        } else {
+          return streamSoundBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public Builder setStreamSound(netcontrol.Commands.StreamSound value) {
+        if (streamSoundBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          streamSound_ = value;
+          onChanged();
+        } else {
+          streamSoundBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public Builder setStreamSound(
+          netcontrol.Commands.StreamSound.Builder builderForValue) {
+        if (streamSoundBuilder_ == null) {
+          streamSound_ = builderForValue.build();
+          onChanged();
+        } else {
+          streamSoundBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public Builder mergeStreamSound(netcontrol.Commands.StreamSound value) {
+        if (streamSoundBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              streamSound_ != netcontrol.Commands.StreamSound.getDefaultInstance()) {
+            streamSound_ =
+              netcontrol.Commands.StreamSound.newBuilder(streamSound_).mergeFrom(value).buildPartial();
+          } else {
+            streamSound_ = value;
+          }
+          onChanged();
+        } else {
+          streamSoundBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public Builder clearStreamSound() {
+        if (streamSoundBuilder_ == null) {
+          streamSound_ = netcontrol.Commands.StreamSound.getDefaultInstance();
+          onChanged();
+        } else {
+          streamSoundBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public netcontrol.Commands.StreamSound.Builder getStreamSoundBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getStreamSoundFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      public netcontrol.Commands.StreamSoundOrBuilder getStreamSoundOrBuilder() {
+        if (streamSoundBuilder_ != null) {
+          return streamSoundBuilder_.getMessageOrBuilder();
+        } else {
+          return streamSound_;
+        }
+      }
+      /**
+       * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          netcontrol.Commands.StreamSound, netcontrol.Commands.StreamSound.Builder, netcontrol.Commands.StreamSoundOrBuilder> 
+          getStreamSoundFieldBuilder() {
+        if (streamSoundBuilder_ == null) {
+          streamSoundBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              netcontrol.Commands.StreamSound, netcontrol.Commands.StreamSound.Builder, netcontrol.Commands.StreamSoundOrBuilder>(
+                  getStreamSound(),
+                  getParentForChildren(),
+                  isClean());
+          streamSound_ = null;
+        }
+        return streamSoundBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:netcontrol.BaseCommands)
     }
 
@@ -719,11 +929,11 @@ public final class Commands {
     float getSound();
 
     /**
-     * <code>optional bool power = 3 [default = true];</code>
+     * <code>optional bool power = 3;</code>
      */
     boolean hasPower();
     /**
-     * <code>optional bool power = 3 [default = true];</code>
+     * <code>optional bool power = 3;</code>
      */
     boolean getPower();
   }
@@ -955,13 +1165,13 @@ public final class Commands {
     public static final int POWER_FIELD_NUMBER = 3;
     private boolean power_;
     /**
-     * <code>optional bool power = 3 [default = true];</code>
+     * <code>optional bool power = 3;</code>
      */
     public boolean hasPower() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional bool power = 3 [default = true];</code>
+     * <code>optional bool power = 3;</code>
      */
     public boolean getPower() {
       return power_;
@@ -970,7 +1180,7 @@ public final class Commands {
     private void initFields() {
       type_ = netcontrol.Commands.DeviceState.Direction.READ;
       sound_ = 0F;
-      power_ = true;
+      power_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1140,7 +1350,7 @@ public final class Commands {
         bitField0_ = (bitField0_ & ~0x00000001);
         sound_ = 0F;
         bitField0_ = (bitField0_ & ~0x00000002);
-        power_ = true;
+        power_ = false;
         bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
@@ -1305,21 +1515,21 @@ public final class Commands {
         return this;
       }
 
-      private boolean power_ = true;
+      private boolean power_ ;
       /**
-       * <code>optional bool power = 3 [default = true];</code>
+       * <code>optional bool power = 3;</code>
        */
       public boolean hasPower() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional bool power = 3 [default = true];</code>
+       * <code>optional bool power = 3;</code>
        */
       public boolean getPower() {
         return power_;
       }
       /**
-       * <code>optional bool power = 3 [default = true];</code>
+       * <code>optional bool power = 3;</code>
        */
       public Builder setPower(boolean value) {
         bitField0_ |= 0x00000004;
@@ -1328,11 +1538,11 @@ public final class Commands {
         return this;
       }
       /**
-       * <code>optional bool power = 3 [default = true];</code>
+       * <code>optional bool power = 3;</code>
        */
       public Builder clearPower() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        power_ = true;
+        power_ = false;
         onChanged();
         return this;
       }
@@ -1348,6 +1558,411 @@ public final class Commands {
     // @@protoc_insertion_point(class_scope:netcontrol.DeviceState)
   }
 
+  public interface StreamSoundOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:netcontrol.StreamSound)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 port = 1;</code>
+     */
+    boolean hasPort();
+    /**
+     * <code>required int32 port = 1;</code>
+     */
+    int getPort();
+  }
+  /**
+   * Protobuf type {@code netcontrol.StreamSound}
+   */
+  public static final class StreamSound extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:netcontrol.StreamSound)
+      StreamSoundOrBuilder {
+    // Use StreamSound.newBuilder() to construct.
+    private StreamSound(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private StreamSound(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final StreamSound defaultInstance;
+    public static StreamSound getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public StreamSound getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private StreamSound(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              port_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return netcontrol.Commands.internal_static_netcontrol_StreamSound_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return netcontrol.Commands.internal_static_netcontrol_StreamSound_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              netcontrol.Commands.StreamSound.class, netcontrol.Commands.StreamSound.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<StreamSound> PARSER =
+        new com.google.protobuf.AbstractParser<StreamSound>() {
+      public StreamSound parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new StreamSound(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<StreamSound> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int PORT_FIELD_NUMBER = 1;
+    private int port_;
+    /**
+     * <code>required int32 port = 1;</code>
+     */
+    public boolean hasPort() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 port = 1;</code>
+     */
+    public int getPort() {
+      return port_;
+    }
+
+    private void initFields() {
+      port_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasPort()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, port_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, port_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static netcontrol.Commands.StreamSound parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static netcontrol.Commands.StreamSound parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static netcontrol.Commands.StreamSound parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static netcontrol.Commands.StreamSound parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static netcontrol.Commands.StreamSound parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static netcontrol.Commands.StreamSound parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static netcontrol.Commands.StreamSound parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static netcontrol.Commands.StreamSound parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static netcontrol.Commands.StreamSound parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static netcontrol.Commands.StreamSound parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(netcontrol.Commands.StreamSound prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code netcontrol.StreamSound}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:netcontrol.StreamSound)
+        netcontrol.Commands.StreamSoundOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return netcontrol.Commands.internal_static_netcontrol_StreamSound_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return netcontrol.Commands.internal_static_netcontrol_StreamSound_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                netcontrol.Commands.StreamSound.class, netcontrol.Commands.StreamSound.Builder.class);
+      }
+
+      // Construct using netcontrol.Commands.StreamSound.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        port_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return netcontrol.Commands.internal_static_netcontrol_StreamSound_descriptor;
+      }
+
+      public netcontrol.Commands.StreamSound getDefaultInstanceForType() {
+        return netcontrol.Commands.StreamSound.getDefaultInstance();
+      }
+
+      public netcontrol.Commands.StreamSound build() {
+        netcontrol.Commands.StreamSound result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public netcontrol.Commands.StreamSound buildPartial() {
+        netcontrol.Commands.StreamSound result = new netcontrol.Commands.StreamSound(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.port_ = port_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof netcontrol.Commands.StreamSound) {
+          return mergeFrom((netcontrol.Commands.StreamSound)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(netcontrol.Commands.StreamSound other) {
+        if (other == netcontrol.Commands.StreamSound.getDefaultInstance()) return this;
+        if (other.hasPort()) {
+          setPort(other.getPort());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasPort()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        netcontrol.Commands.StreamSound parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (netcontrol.Commands.StreamSound) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int port_ ;
+      /**
+       * <code>required int32 port = 1;</code>
+       */
+      public boolean hasPort() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 port = 1;</code>
+       */
+      public int getPort() {
+        return port_;
+      }
+      /**
+       * <code>required int32 port = 1;</code>
+       */
+      public Builder setPort(int value) {
+        bitField0_ |= 0x00000001;
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 port = 1;</code>
+       */
+      public Builder clearPort() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        port_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:netcontrol.StreamSound)
+    }
+
+    static {
+      defaultInstance = new StreamSound(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:netcontrol.StreamSound)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_netcontrol_BaseCommands_descriptor;
   private static
@@ -1358,6 +1973,11 @@ public final class Commands {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_netcontrol_DeviceState_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_netcontrol_StreamSound_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_netcontrol_StreamSound_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1367,14 +1987,17 @@ public final class Commands {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\030Cubie/BaseCommands.proto\022\nnetcontrol\"\203" +
+      "\n\030Cubie/BaseCommands.proto\022\nnetcontrol\"\303" +
       "\001\n\014BaseCommands\022+\n\004type\030\001 \002(\0162\035.netcontr" +
       "ol.BaseCommands.Type\022,\n\013deviceState\030\002 \001(" +
-      "\0132\027.netcontrol.DeviceState\"\030\n\004Type\022\020\n\014DE" +
-      "VICE_STATE\020\001\"\204\001\n\013DeviceState\022/\n\004type\030\001 \002" +
-      "(\0162!.netcontrol.DeviceState.Direction\022\r\n" +
-      "\005sound\030\002 \001(\002\022\023\n\005power\030\003 \001(\010:\004true\" \n\tDir" +
-      "ection\022\010\n\004READ\020\001\022\t\n\005WRITE\020\002B\nB\010Commands"
+      "\0132\027.netcontrol.DeviceState\022,\n\013streamSoun" +
+      "d\030\003 \001(\0132\027.netcontrol.StreamSound\"*\n\004Type" +
+      "\022\020\n\014DEVICE_STATE\020\001\022\020\n\014STREAM_SOUND\020\002\"~\n\013" +
+      "DeviceState\022/\n\004type\030\001 \002(\0162!.netcontrol.D" +
+      "eviceState.Direction\022\r\n\005sound\030\002 \001(\002\022\r\n\005p" +
+      "ower\030\003 \001(\010\" \n\tDirection\022\010\n\004READ\020\001\022\t\n\005WRI" +
+      "TE\020\002\"\033\n\013StreamSound\022\014\n\004port\030\001 \002(\005B\nB\010Com",
+      "mands"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1393,13 +2016,19 @@ public final class Commands {
     internal_static_netcontrol_BaseCommands_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_BaseCommands_descriptor,
-        new java.lang.String[] { "Type", "DeviceState", });
+        new java.lang.String[] { "Type", "DeviceState", "StreamSound", });
     internal_static_netcontrol_DeviceState_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_netcontrol_DeviceState_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_DeviceState_descriptor,
         new java.lang.String[] { "Type", "Sound", "Power", });
+    internal_static_netcontrol_StreamSound_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_netcontrol_StreamSound_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_netcontrol_StreamSound_descriptor,
+        new java.lang.String[] { "Port", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
