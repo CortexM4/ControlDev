@@ -24,31 +24,39 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *
  * @author Crtx
  */
-public class Sound implements Runnable {
+public class Sound {
 
     private static final Logger log = Logger.getLogger(Sound.class.getName());
 
     private boolean isLoaded = false;                          // Успешно ли открыт поток
     private boolean isPlaying = false;                          // Играет ли сейчас что-либо
 
-    private final Thread soundThread;
-    static FloatControl gainControl;
-    static Clip clip;
+    private static FloatControl gainControl;
+    private static float volume;                                     // Хранение значения усиления (Как-то криво)
+    private Clip clip;
 
-    public static void Sound(String path){
+    public static void InitGain(float gain){
+        if(gain > 1.0F) gain = 1.0F;
+        else if(gain < 0.0F) gain = 0.0F;
+        volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+    }
+    
+    public static void Sound(String path) {
         File file = new File(path);
         Sound snd = new Sound(file);
         snd.play();
     }
+    
+    /*  Такие конструкторы это вообще-то бред, надо потом исправить  */
     public Sound(File file) {
-
-        soundThread = new Thread(this, "SoundThread");
+        
         try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(file);      
+            AudioInputStream stream = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(stream);
             clip.addLineListener(new Listener());
             gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(volume);
             isLoaded = true;
 
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
@@ -56,17 +64,17 @@ public class Sound implements Runnable {
             log.log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public Sound(InputStream strm) {
 
-        soundThread = new Thread(this, "SoundThread");
         try {
-            BufferedInputStream bufferedIn = new BufferedInputStream(strm); 
+            BufferedInputStream bufferedIn = new BufferedInputStream(strm);
             AudioInputStream stream = AudioSystem.getAudioInputStream(bufferedIn);
             clip = AudioSystem.getClip();
             clip.open(stream);
             clip.addLineListener(new Listener());
             gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(volume);
             isLoaded = true;
 
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
@@ -76,29 +84,21 @@ public class Sound implements Runnable {
     }
 
     public void play() {
-        soundThread.start(); 
-        log.info("SoundThread started");
+        play(true);
+        log.info("Sound played");
     }
+
     public static void setVolume(float gain) {       // Про увеличение громкости 
-        if(gain<0.0)                                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
-            gain=0.0F;
-        else if(gain>1.0)
-            gain=1.0F;
-        
-        float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-        gainControl.setValue(dB);
-   //     float maxVol = gainControl.getMaximum();
-   //     float minVol = gainControl.getMinimum();
-   //     gainControl.setValue(minVol + (maxVol - minVol) * gain);
+        if (gain < 0.0) gain = 0.0F;                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
+        else if (gain > 1.0) gain = 1.0F;
+
+        volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+        gainControl.setValue(volume);
     }
 
     public static float getVolume() {
         float dB = gainControl.getValue();
         float gain = (float) (Math.exp(dB / 20.0 * Math.log(10.0)));
-//       float gain = (float) (dB * 20.0 * Math.log(10.0));
- //       float min = gainControl.getMinimum();
- //       float max = gainControl.getMaximum();
- //       return (v - min) / (max - min);
         return gain;
     }
 
@@ -124,11 +124,6 @@ public class Sound implements Runnable {
             clip.stop();
         }
         clip.close();
-    }
-
-    @Override
-    public void run() {
-       play(true); 
     }
 
     //Дожидается окончания проигрывания звука

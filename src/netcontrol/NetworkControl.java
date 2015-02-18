@@ -38,6 +38,7 @@ public class NetworkControl {
         net = new NetworkControl();
         
         /**********Инициализация начальных параметров************/
+        Sound.InitGain(0.5F);        // Вообще борода
         Sound.Sound("files.wav");   // Проигрывание начального звука для инициализации Clip
          
         while (true) {
@@ -50,7 +51,7 @@ public class NetworkControl {
         server = new ServerSocket(port);
         log.info("Server started");
         } catch (IOException ex) {
-            Logger.getLogger(NetworkControl.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
     }
     
@@ -60,7 +61,6 @@ public class NetworkControl {
         BaseCommands packet;
         BaseCommands.Builder packet_return = BaseCommands.newBuilder();
         try {
-            log.info("Wait client");
             clientConnection = server.accept();
  
             //inStream = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
@@ -82,13 +82,17 @@ public class NetworkControl {
                     break;
                 case STREAM_SOUND :                                       // Проигрывание звука
                     log.info("Command: STREAM_SOUND");
+                    StreamSoundProcess ssp = new StreamSoundProcess(packet.getStreamSound());
+                    packet_return.setStreamSound(ssp.start());                  // Значит так, ssp.start() запускает потоки и
+                    packet_return.setType(BaseCommands.Type.STREAM_SOUND);      // возвращает StreamSound. Если поле port -1 то,
+                    packet_return.build().writeTo(outStream);                   // произошла какая-то ошибка.
 //                    Sound snd = new Sound(new File("gamestart.wav"));
                     //BufferedInputStream bufferedIn = new BufferedInputStream(strm);
 //                    Sound snd = new Sound(clientConnection.getInputStream());
 //                    snd.setVolume((float) 0.6);     // Проверять, если объект не создался!!!!!!!!!!
 //                    snd.play();
 //                    outStream.write(PLAY_SOUND);
-//                    break;
+                    break;
 //                case GET_VOLUME :
 //                    float vol = Sound.getVolume();
 //                    int svol = Float.floatToIntBits(vol);
