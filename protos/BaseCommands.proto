@@ -2,10 +2,11 @@ package netcontrol;
 option java_outer_classname = "Commands";
 
 message BaseCommands {
-	enum Type { DEVICE_STATE = 1; STREAM_SOUND = 2; }
+	enum Type { DEVICE_STATE = 1; STREAM_SOUND = 2; FAIRY_TALE = 3; }
 	required Type type = 1;
 	optional DeviceState deviceState = 2;
 	optional StreamSound streamSound = 3;
+	optional FairyTale fairyTale = 4;
 }
 
 message DeviceState {
@@ -16,5 +17,11 @@ message DeviceState {
 }
 
 message StreamSound {
-	required int32 port = 1;
+	optional int32 port = 1;
+	required bool reload = 2;
+}
+
+message FairyTale {
+	required string name = 1;
+	optional int32 position = 2 [default = 0];
 }

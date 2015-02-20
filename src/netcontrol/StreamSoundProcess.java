@@ -24,13 +24,21 @@ public class StreamSoundProcess implements Runnable {
     private Socket                    clientConnection;
     private int                       port;
     
+    private boolean                   reload;
     private final Thread              StreamThread;
     
     private static final int          ERROR_PORT = -1;
+    private static final int          DEFAULT_PORT = 4445;
     
     public StreamSoundProcess(StreamSound streamSound) {
         StreamThread = new Thread(this, "StreamThread");
-        port = streamSound.getPort();
+        
+        if(streamSound.hasPort())
+            port = streamSound.getPort();
+        else                                            // Если поле port не установленно
+            port = DEFAULT_PORT;
+        
+        reload = streamSound.getReload();
         
         try {
         server = new ServerSocket(port);
@@ -43,6 +51,7 @@ public class StreamSoundProcess implements Runnable {
     public StreamSound start() {
         StreamSound.Builder ss = StreamSound.newBuilder();
         ss.setPort(port);
+        ss.setReload(reload);
         StreamThread.start();
         return ss.build();
     } 
@@ -53,8 +62,8 @@ public class StreamSoundProcess implements Runnable {
         log.info("StreamSound thread start");
         try {
             clientConnection = server.accept();
-            Sound snd = new Sound(clientConnection.getInputStream());
-            snd.play();
+            Sound.playStream(clientConnection.getInputStream(), reload);
+            clientConnection.close();
             server.close();
         } catch (IOException ex) {
             Logger.getLogger(StreamSoundProcess.class.getName()).log(Level.SEVERE, null, ex);

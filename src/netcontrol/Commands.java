@@ -46,6 +46,19 @@ public final class Commands {
      * <code>optional .netcontrol.StreamSound streamSound = 3;</code>
      */
     netcontrol.Commands.StreamSoundOrBuilder getStreamSoundOrBuilder();
+
+    /**
+     * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+     */
+    boolean hasFairyTale();
+    /**
+     * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+     */
+    netcontrol.Commands.FairyTale getFairyTale();
+    /**
+     * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+     */
+    netcontrol.Commands.FairyTaleOrBuilder getFairyTaleOrBuilder();
   }
   /**
    * Protobuf type {@code netcontrol.BaseCommands}
@@ -136,6 +149,19 @@ public final class Commands {
               bitField0_ |= 0x00000004;
               break;
             }
+            case 34: {
+              netcontrol.Commands.FairyTale.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+                subBuilder = fairyTale_.toBuilder();
+              }
+              fairyTale_ = input.readMessage(netcontrol.Commands.FairyTale.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fairyTale_);
+                fairyTale_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000008;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -188,6 +214,10 @@ public final class Commands {
        * <code>STREAM_SOUND = 2;</code>
        */
       STREAM_SOUND(1, 2),
+      /**
+       * <code>FAIRY_TALE = 3;</code>
+       */
+      FAIRY_TALE(2, 3),
       ;
 
       /**
@@ -198,6 +228,10 @@ public final class Commands {
        * <code>STREAM_SOUND = 2;</code>
        */
       public static final int STREAM_SOUND_VALUE = 2;
+      /**
+       * <code>FAIRY_TALE = 3;</code>
+       */
+      public static final int FAIRY_TALE_VALUE = 3;
 
 
       public final int getNumber() { return value; }
@@ -206,6 +240,7 @@ public final class Commands {
         switch (value) {
           case 1: return DEVICE_STATE;
           case 2: return STREAM_SOUND;
+          case 3: return FAIRY_TALE;
           default: return null;
         }
       }
@@ -315,10 +350,32 @@ public final class Commands {
       return streamSound_;
     }
 
+    public static final int FAIRYTALE_FIELD_NUMBER = 4;
+    private netcontrol.Commands.FairyTale fairyTale_;
+    /**
+     * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+     */
+    public boolean hasFairyTale() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+     */
+    public netcontrol.Commands.FairyTale getFairyTale() {
+      return fairyTale_;
+    }
+    /**
+     * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+     */
+    public netcontrol.Commands.FairyTaleOrBuilder getFairyTaleOrBuilder() {
+      return fairyTale_;
+    }
+
     private void initFields() {
       type_ = netcontrol.Commands.BaseCommands.Type.DEVICE_STATE;
       deviceState_ = netcontrol.Commands.DeviceState.getDefaultInstance();
       streamSound_ = netcontrol.Commands.StreamSound.getDefaultInstance();
+      fairyTale_ = netcontrol.Commands.FairyTale.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -342,6 +399,12 @@ public final class Commands {
           return false;
         }
       }
+      if (hasFairyTale()) {
+        if (!getFairyTale().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -357,6 +420,9 @@ public final class Commands {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(3, streamSound_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, fairyTale_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -378,6 +444,10 @@ public final class Commands {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, streamSound_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, fairyTale_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -490,6 +560,7 @@ public final class Commands {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getDeviceStateFieldBuilder();
           getStreamSoundFieldBuilder();
+          getFairyTaleFieldBuilder();
         }
       }
       private static Builder create() {
@@ -512,6 +583,12 @@ public final class Commands {
           streamSoundBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000004);
+        if (fairyTaleBuilder_ == null) {
+          fairyTale_ = netcontrol.Commands.FairyTale.getDefaultInstance();
+        } else {
+          fairyTaleBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -560,6 +637,14 @@ public final class Commands {
         } else {
           result.streamSound_ = streamSoundBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (fairyTaleBuilder_ == null) {
+          result.fairyTale_ = fairyTale_;
+        } else {
+          result.fairyTale_ = fairyTaleBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -585,6 +670,9 @@ public final class Commands {
         if (other.hasStreamSound()) {
           mergeStreamSound(other.getStreamSound());
         }
+        if (other.hasFairyTale()) {
+          mergeFairyTale(other.getFairyTale());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -602,6 +690,12 @@ public final class Commands {
         }
         if (hasStreamSound()) {
           if (!getStreamSound().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasFairyTale()) {
+          if (!getFairyTale().isInitialized()) {
             
             return false;
           }
@@ -893,6 +987,122 @@ public final class Commands {
           streamSound_ = null;
         }
         return streamSoundBuilder_;
+      }
+
+      private netcontrol.Commands.FairyTale fairyTale_ = netcontrol.Commands.FairyTale.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          netcontrol.Commands.FairyTale, netcontrol.Commands.FairyTale.Builder, netcontrol.Commands.FairyTaleOrBuilder> fairyTaleBuilder_;
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public boolean hasFairyTale() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public netcontrol.Commands.FairyTale getFairyTale() {
+        if (fairyTaleBuilder_ == null) {
+          return fairyTale_;
+        } else {
+          return fairyTaleBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public Builder setFairyTale(netcontrol.Commands.FairyTale value) {
+        if (fairyTaleBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fairyTale_ = value;
+          onChanged();
+        } else {
+          fairyTaleBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public Builder setFairyTale(
+          netcontrol.Commands.FairyTale.Builder builderForValue) {
+        if (fairyTaleBuilder_ == null) {
+          fairyTale_ = builderForValue.build();
+          onChanged();
+        } else {
+          fairyTaleBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public Builder mergeFairyTale(netcontrol.Commands.FairyTale value) {
+        if (fairyTaleBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              fairyTale_ != netcontrol.Commands.FairyTale.getDefaultInstance()) {
+            fairyTale_ =
+              netcontrol.Commands.FairyTale.newBuilder(fairyTale_).mergeFrom(value).buildPartial();
+          } else {
+            fairyTale_ = value;
+          }
+          onChanged();
+        } else {
+          fairyTaleBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public Builder clearFairyTale() {
+        if (fairyTaleBuilder_ == null) {
+          fairyTale_ = netcontrol.Commands.FairyTale.getDefaultInstance();
+          onChanged();
+        } else {
+          fairyTaleBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public netcontrol.Commands.FairyTale.Builder getFairyTaleBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getFairyTaleFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      public netcontrol.Commands.FairyTaleOrBuilder getFairyTaleOrBuilder() {
+        if (fairyTaleBuilder_ != null) {
+          return fairyTaleBuilder_.getMessageOrBuilder();
+        } else {
+          return fairyTale_;
+        }
+      }
+      /**
+       * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          netcontrol.Commands.FairyTale, netcontrol.Commands.FairyTale.Builder, netcontrol.Commands.FairyTaleOrBuilder> 
+          getFairyTaleFieldBuilder() {
+        if (fairyTaleBuilder_ == null) {
+          fairyTaleBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              netcontrol.Commands.FairyTale, netcontrol.Commands.FairyTale.Builder, netcontrol.Commands.FairyTaleOrBuilder>(
+                  getFairyTale(),
+                  getParentForChildren(),
+                  isClean());
+          fairyTale_ = null;
+        }
+        return fairyTaleBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:netcontrol.BaseCommands)
@@ -1563,13 +1773,22 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required int32 port = 1;</code>
+     * <code>optional int32 port = 1;</code>
      */
     boolean hasPort();
     /**
-     * <code>required int32 port = 1;</code>
+     * <code>optional int32 port = 1;</code>
      */
     int getPort();
+
+    /**
+     * <code>required bool reload = 2;</code>
+     */
+    boolean hasReload();
+    /**
+     * <code>required bool reload = 2;</code>
+     */
+    boolean getReload();
   }
   /**
    * Protobuf type {@code netcontrol.StreamSound}
@@ -1628,6 +1847,11 @@ public final class Commands {
               port_ = input.readInt32();
               break;
             }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              reload_ = input.readBool();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1671,20 +1895,36 @@ public final class Commands {
     public static final int PORT_FIELD_NUMBER = 1;
     private int port_;
     /**
-     * <code>required int32 port = 1;</code>
+     * <code>optional int32 port = 1;</code>
      */
     public boolean hasPort() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required int32 port = 1;</code>
+     * <code>optional int32 port = 1;</code>
      */
     public int getPort() {
       return port_;
     }
 
+    public static final int RELOAD_FIELD_NUMBER = 2;
+    private boolean reload_;
+    /**
+     * <code>required bool reload = 2;</code>
+     */
+    public boolean hasReload() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required bool reload = 2;</code>
+     */
+    public boolean getReload() {
+      return reload_;
+    }
+
     private void initFields() {
       port_ = 0;
+      reload_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1692,7 +1932,7 @@ public final class Commands {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasPort()) {
+      if (!hasReload()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1706,6 +1946,9 @@ public final class Commands {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeInt32(1, port_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBool(2, reload_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1718,6 +1961,10 @@ public final class Commands {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, port_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, reload_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1838,6 +2085,8 @@ public final class Commands {
         super.clear();
         port_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
+        reload_ = false;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -1870,6 +2119,10 @@ public final class Commands {
           to_bitField0_ |= 0x00000001;
         }
         result.port_ = port_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.reload_ = reload_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1889,12 +2142,15 @@ public final class Commands {
         if (other.hasPort()) {
           setPort(other.getPort());
         }
+        if (other.hasReload()) {
+          setReload(other.getReload());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasPort()) {
+        if (!hasReload()) {
           
           return false;
         }
@@ -1922,19 +2178,19 @@ public final class Commands {
 
       private int port_ ;
       /**
-       * <code>required int32 port = 1;</code>
+       * <code>optional int32 port = 1;</code>
        */
       public boolean hasPort() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 port = 1;</code>
+       * <code>optional int32 port = 1;</code>
        */
       public int getPort() {
         return port_;
       }
       /**
-       * <code>required int32 port = 1;</code>
+       * <code>optional int32 port = 1;</code>
        */
       public Builder setPort(int value) {
         bitField0_ |= 0x00000001;
@@ -1943,11 +2199,43 @@ public final class Commands {
         return this;
       }
       /**
-       * <code>required int32 port = 1;</code>
+       * <code>optional int32 port = 1;</code>
        */
       public Builder clearPort() {
         bitField0_ = (bitField0_ & ~0x00000001);
         port_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean reload_ ;
+      /**
+       * <code>required bool reload = 2;</code>
+       */
+      public boolean hasReload() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required bool reload = 2;</code>
+       */
+      public boolean getReload() {
+        return reload_;
+      }
+      /**
+       * <code>required bool reload = 2;</code>
+       */
+      public Builder setReload(boolean value) {
+        bitField0_ |= 0x00000002;
+        reload_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool reload = 2;</code>
+       */
+      public Builder clearReload() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        reload_ = false;
         onChanged();
         return this;
       }
@@ -1961,6 +2249,568 @@ public final class Commands {
     }
 
     // @@protoc_insertion_point(class_scope:netcontrol.StreamSound)
+  }
+
+  public interface FairyTaleOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:netcontrol.FairyTale)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string name = 1;</code>
+     */
+    boolean hasName();
+    /**
+     * <code>required string name = 1;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <code>required string name = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>optional int32 position = 2 [default = 0];</code>
+     */
+    boolean hasPosition();
+    /**
+     * <code>optional int32 position = 2 [default = 0];</code>
+     */
+    int getPosition();
+  }
+  /**
+   * Protobuf type {@code netcontrol.FairyTale}
+   */
+  public static final class FairyTale extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:netcontrol.FairyTale)
+      FairyTaleOrBuilder {
+    // Use FairyTale.newBuilder() to construct.
+    private FairyTale(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private FairyTale(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final FairyTale defaultInstance;
+    public static FairyTale getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public FairyTale getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FairyTale(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              name_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              position_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return netcontrol.Commands.internal_static_netcontrol_FairyTale_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return netcontrol.Commands.internal_static_netcontrol_FairyTale_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              netcontrol.Commands.FairyTale.class, netcontrol.Commands.FairyTale.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<FairyTale> PARSER =
+        new com.google.protobuf.AbstractParser<FairyTale>() {
+      public FairyTale parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FairyTale(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FairyTale> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int NAME_FIELD_NUMBER = 1;
+    private java.lang.Object name_;
+    /**
+     * <code>required string name = 1;</code>
+     */
+    public boolean hasName() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string name = 1;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          name_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string name = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int POSITION_FIELD_NUMBER = 2;
+    private int position_;
+    /**
+     * <code>optional int32 position = 2 [default = 0];</code>
+     */
+    public boolean hasPosition() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional int32 position = 2 [default = 0];</code>
+     */
+    public int getPosition() {
+      return position_;
+    }
+
+    private void initFields() {
+      name_ = "";
+      position_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasName()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getNameBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, position_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getNameBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, position_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static netcontrol.Commands.FairyTale parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static netcontrol.Commands.FairyTale parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static netcontrol.Commands.FairyTale parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static netcontrol.Commands.FairyTale parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static netcontrol.Commands.FairyTale parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static netcontrol.Commands.FairyTale parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static netcontrol.Commands.FairyTale parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static netcontrol.Commands.FairyTale parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static netcontrol.Commands.FairyTale parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static netcontrol.Commands.FairyTale parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(netcontrol.Commands.FairyTale prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code netcontrol.FairyTale}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:netcontrol.FairyTale)
+        netcontrol.Commands.FairyTaleOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return netcontrol.Commands.internal_static_netcontrol_FairyTale_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return netcontrol.Commands.internal_static_netcontrol_FairyTale_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                netcontrol.Commands.FairyTale.class, netcontrol.Commands.FairyTale.Builder.class);
+      }
+
+      // Construct using netcontrol.Commands.FairyTale.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        name_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        position_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return netcontrol.Commands.internal_static_netcontrol_FairyTale_descriptor;
+      }
+
+      public netcontrol.Commands.FairyTale getDefaultInstanceForType() {
+        return netcontrol.Commands.FairyTale.getDefaultInstance();
+      }
+
+      public netcontrol.Commands.FairyTale build() {
+        netcontrol.Commands.FairyTale result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public netcontrol.Commands.FairyTale buildPartial() {
+        netcontrol.Commands.FairyTale result = new netcontrol.Commands.FairyTale(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.name_ = name_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.position_ = position_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof netcontrol.Commands.FairyTale) {
+          return mergeFrom((netcontrol.Commands.FairyTale)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(netcontrol.Commands.FairyTale other) {
+        if (other == netcontrol.Commands.FairyTale.getDefaultInstance()) return this;
+        if (other.hasName()) {
+          bitField0_ |= 0x00000001;
+          name_ = other.name_;
+          onChanged();
+        }
+        if (other.hasPosition()) {
+          setPosition(other.getPosition());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasName()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        netcontrol.Commands.FairyTale parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (netcontrol.Commands.FairyTale) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>required string name = 1;</code>
+       */
+      public boolean hasName() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string name = 1;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string name = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string name = 1;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string name = 1;</code>
+       */
+      public Builder clearName() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string name = 1;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int position_ ;
+      /**
+       * <code>optional int32 position = 2 [default = 0];</code>
+       */
+      public boolean hasPosition() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional int32 position = 2 [default = 0];</code>
+       */
+      public int getPosition() {
+        return position_;
+      }
+      /**
+       * <code>optional int32 position = 2 [default = 0];</code>
+       */
+      public Builder setPosition(int value) {
+        bitField0_ |= 0x00000002;
+        position_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 position = 2 [default = 0];</code>
+       */
+      public Builder clearPosition() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        position_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:netcontrol.FairyTale)
+    }
+
+    static {
+      defaultInstance = new FairyTale(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:netcontrol.FairyTale)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
@@ -1978,6 +2828,11 @@ public final class Commands {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_netcontrol_StreamSound_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_netcontrol_FairyTale_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_netcontrol_FairyTale_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1987,17 +2842,20 @@ public final class Commands {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\030Cubie/BaseCommands.proto\022\nnetcontrol\"\303" +
+      "\n\030Cubie/BaseCommands.proto\022\nnetcontrol\"\375" +
       "\001\n\014BaseCommands\022+\n\004type\030\001 \002(\0162\035.netcontr" +
       "ol.BaseCommands.Type\022,\n\013deviceState\030\002 \001(" +
       "\0132\027.netcontrol.DeviceState\022,\n\013streamSoun" +
-      "d\030\003 \001(\0132\027.netcontrol.StreamSound\"*\n\004Type" +
-      "\022\020\n\014DEVICE_STATE\020\001\022\020\n\014STREAM_SOUND\020\002\"~\n\013" +
-      "DeviceState\022/\n\004type\030\001 \002(\0162!.netcontrol.D" +
-      "eviceState.Direction\022\r\n\005sound\030\002 \001(\002\022\r\n\005p" +
-      "ower\030\003 \001(\010\" \n\tDirection\022\010\n\004READ\020\001\022\t\n\005WRI" +
-      "TE\020\002\"\033\n\013StreamSound\022\014\n\004port\030\001 \002(\005B\nB\010Com",
-      "mands"
+      "d\030\003 \001(\0132\027.netcontrol.StreamSound\022(\n\tfair" +
+      "yTale\030\004 \001(\0132\025.netcontrol.FairyTale\":\n\004Ty" +
+      "pe\022\020\n\014DEVICE_STATE\020\001\022\020\n\014STREAM_SOUND\020\002\022\016" +
+      "\n\nFAIRY_TALE\020\003\"~\n\013DeviceState\022/\n\004type\030\001 " +
+      "\002(\0162!.netcontrol.DeviceState.Direction\022\r" +
+      "\n\005sound\030\002 \001(\002\022\r\n\005power\030\003 \001(\010\" \n\tDirectio",
+      "n\022\010\n\004READ\020\001\022\t\n\005WRITE\020\002\"+\n\013StreamSound\022\014\n" +
+      "\004port\030\001 \001(\005\022\016\n\006reload\030\002 \002(\010\".\n\tFairyTale" +
+      "\022\014\n\004name\030\001 \002(\t\022\023\n\010position\030\002 \001(\005:\0010B\nB\010C" +
+      "ommands"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2016,7 +2874,7 @@ public final class Commands {
     internal_static_netcontrol_BaseCommands_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_BaseCommands_descriptor,
-        new java.lang.String[] { "Type", "DeviceState", "StreamSound", });
+        new java.lang.String[] { "Type", "DeviceState", "StreamSound", "FairyTale", });
     internal_static_netcontrol_DeviceState_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_netcontrol_DeviceState_fieldAccessorTable = new
@@ -2028,7 +2886,13 @@ public final class Commands {
     internal_static_netcontrol_StreamSound_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_StreamSound_descriptor,
-        new java.lang.String[] { "Port", });
+        new java.lang.String[] { "Port", "Reload", });
+    internal_static_netcontrol_FairyTale_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_netcontrol_FairyTale_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_netcontrol_FairyTale_descriptor,
+        new java.lang.String[] { "Name", "Position", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

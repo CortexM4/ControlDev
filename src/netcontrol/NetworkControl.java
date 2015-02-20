@@ -39,8 +39,7 @@ public class NetworkControl {
         
         /**********Инициализация начальных параметров************/
         Sound.InitGain(0.5F);        // Вообще борода
-        Sound.Sound("files.wav");   // Проигрывание начального звука для инициализации Clip
-         
+        Sound.Sound("files.wav", true);   // Проигрывание начального звука для инициализации Clip
         while (true) {
             net.ListenSocket();
         }
@@ -86,18 +85,12 @@ public class NetworkControl {
                     packet_return.setStreamSound(ssp.start());                  // Значит так, ssp.start() запускает потоки и
                     packet_return.setType(BaseCommands.Type.STREAM_SOUND);      // возвращает StreamSound. Если поле port -1 то,
                     packet_return.build().writeTo(outStream);                   // произошла какая-то ошибка.
-//                    Sound snd = new Sound(new File("gamestart.wav"));
-                    //BufferedInputStream bufferedIn = new BufferedInputStream(strm);
-//                    Sound snd = new Sound(clientConnection.getInputStream());
-//                    snd.setVolume((float) 0.6);     // Проверять, если объект не создался!!!!!!!!!!
-//                    snd.play();
-//                    outStream.write(PLAY_SOUND);
                     break;
-//                case GET_VOLUME :
+                case FAIRY_TALE :
 //                    float vol = Sound.getVolume();
 //                    int svol = Float.floatToIntBits(vol);
 //                    outStream.writeInt(svol);
-//                    break;
+                    break;
 //                case SET_VOLUME:
 //                    byte[] volu = new byte[4];
 //                    inStream.read(volu);

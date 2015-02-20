@@ -28,69 +28,86 @@ public class Sound {
 
     private static final Logger log = Logger.getLogger(Sound.class.getName());
 
-    private boolean isLoaded = false;                          // Успешно ли открыт поток
-    private boolean isPlaying = false;                          // Играет ли сейчас что-либо
+    private static boolean isLoaded = false;                          // Успешно ли открыт поток
+    private static boolean isPlaying = false;                          // Играет ли сейчас что-либо
 
     private static FloatControl gainControl;
     private static float volume;                                     // Хранение значения усиления (Как-то криво)
-    private Clip clip;
+    private static Clip clip;
 
-    public static void InitGain(float gain){
-        if(gain > 1.0F) gain = 1.0F;
-        else if(gain < 0.0F) gain = 0.0F;
+    public static void InitGain(float gain) {
+        if (gain > 1.0F) {
+            gain = 1.0F;
+        } else if (gain < 0.0F) {
+            gain = 0.0F;
+        }
         volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
     }
-    
-    public static void Sound(String path) {
-        File file = new File(path);
-        Sound snd = new Sound(file);
-        snd.play();
-    }
-    
-    /*  Такие конструкторы это вообще-то бред, надо потом исправить  */
-    public Sound(File file) {
-        
-        try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(stream);
-            clip.addLineListener(new Listener());
-            gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(volume);
-            isLoaded = true;
 
+    public static void Sound(String path, boolean reload) {
+        try {
+            if (isPlaying && reload) {
+                synchronized (clip) {
+                    clip.notify();                      // Соответственно, целесообразность этого уведомдения тоже под вопросом
+                    stop();
+                }
+            }
+            if (!isPlaying) {
+                File file = new File(path);
+                AudioInputStream stream = AudioSystem.getAudioInputStream(file);
+                clip = AudioSystem.getClip();
+                clip.open(stream);
+                clip.addLineListener(new Listener());
+                gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(volume);
+                isLoaded = true;
+                clip.setFramePosition(0);
+                clip.start();
+                isPlaying = true;
+                log.info("Sound played");
+            }
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
             isLoaded = false;
             log.log(Level.SEVERE, null, ex);
         }
     }
 
-    public Sound(InputStream strm) {
-
+    public static void playStream(InputStream strm, boolean reload) {
         try {
-            BufferedInputStream bufferedIn = new BufferedInputStream(strm);
-            AudioInputStream stream = AudioSystem.getAudioInputStream(bufferedIn);
-            clip = AudioSystem.getClip();
-            clip.open(stream);
-            clip.addLineListener(new Listener());
-            gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue(volume);
-            isLoaded = true;
+            if (isPlaying && reload) {
+                synchronized (clip) {
+                    clip.notify();                      // Соответственно, целесообразность этого уведомдения тоже под вопросом
+                    stop();
+                }
+            }
+            if (!isPlaying) {
+                BufferedInputStream bufferedIn = new BufferedInputStream(strm);
+                AudioInputStream stream = AudioSystem.getAudioInputStream(bufferedIn);
+
+                clip = AudioSystem.getClip();
+                clip.open(stream);
+                clip.addLineListener(new Listener());
+                gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(volume);
+                isLoaded = true;
+                clip.setFramePosition(0);
+                clip.start();
+                isPlaying = true;
+                log.info("Sound played");
+            }
 
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
             isLoaded = false;
             log.log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void play() {
-        play(true);
-        log.info("Sound played");
     }
 
     public static void setVolume(float gain) {       // Про увеличение громкости 
-        if (gain < 0.0) gain = 0.0F;                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
-        else if (gain > 1.0) gain = 1.0F;
+        if (gain < 0.0) {
+            gain = 0.0F;                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
+        } else if (gain > 1.0) {
+            gain = 1.0F;
+        }
 
         volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
         gainControl.setValue(volume);
@@ -102,28 +119,12 @@ public class Sound {
         return gain;
     }
 
-    /* reload указывает играть ли сначало */
-    private void play(boolean reload) {
-        if (isLoaded) {
-            if (reload) {
-                clip.stop();
-                clip.setFramePosition(0);
-                clip.start();
-                isPlaying = true;
-            }
-            if (!isPlaying) {
-                clip.setFramePosition(0);
-                clip.start();
-                isPlaying = true;
-            }
-        }
-    }
-
-    public void stop() {
+    public static void stop() {
         if (isPlaying) {
             clip.stop();
         }
         clip.close();
+        isPlaying = false;
     }
 
     //Дожидается окончания проигрывания звука
@@ -142,12 +143,11 @@ public class Sound {
         }
     }
 
-    private class Listener implements LineListener {
+    private static class Listener implements LineListener {     // Да вообще это какая-то хрень
 
         @Override
         public void update(LineEvent ev) {
             if (ev.getType() == LineEvent.Type.STOP) {
-                isPlaying = false;
                 synchronized (clip) {
                     clip.notify();                      // Соответственно, целесообразность этого уведомдения тоже под вопросом
                     stop();
