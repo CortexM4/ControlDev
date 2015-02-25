@@ -24,4 +24,5 @@ message StreamSound {
 message FairyTale {
 	required string name = 1;
 	optional int32 position = 2 [default = 0];
+	optional int32 maxPosition = 3;
 }

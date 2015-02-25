@@ -39,7 +39,7 @@ public class NetworkControl {
         
         /**********Инициализация начальных параметров************/
         Sound.InitGain(0.5F);        // Вообще борода
-        Sound.Sound("files.wav", true);   // Проигрывание начального звука для инициализации Clip
+        Sound.Sound("files.wav", true, 0);   // Проигрывание начального звука для инициализации Clip
         while (true) {
             net.ListenSocket();
         }
@@ -86,7 +86,9 @@ public class NetworkControl {
                     packet_return.setType(BaseCommands.Type.STREAM_SOUND);      // возвращает StreamSound. Если поле port -1 то,
                     packet_return.build().writeTo(outStream);                   // произошла какая-то ошибка.
                     break;
-                case FAIRY_TALE :
+                case FAIRY_TALE :                                           // Сказки
+                    log.info("Command: FAIRY_TALE");
+                    FairyTaleProcess ftp = new FairyTaleProcess(packet.getFairyTale()); 
 //                    float vol = Sound.getVolume();
 //                    int svol = Float.floatToIntBits(vol);
 //                    outStream.writeInt(svol);

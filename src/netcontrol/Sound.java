@@ -34,7 +34,16 @@ public class Sound {
     private static FloatControl gainControl;
     private static float volume;                                     // Хранение значения усиления (Как-то криво)
     private static Clip clip;
+    
+    private static int maxPosition;                                  // Устанавливается при проигрывании локальный файлов (сказок)
+                                                                     // и отсылается клиенту, чтобы была возможность изминять позицию
 
+    private static final int          ERROR_PLAY = -1;
+    
+    
+    public static int GetMaxPosition() {
+        return maxPosition;
+    }
     public static void InitGain(float gain) {
         if (gain > 1.0F) {
             gain = 1.0F;
@@ -44,7 +53,7 @@ public class Sound {
         volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
     }
 
-    public static void Sound(String path, boolean reload) {
+    public static void Sound(String path, boolean reload, int position) {
         try {
             if (isPlaying && reload) {
                 synchronized (clip) {
@@ -61,13 +70,15 @@ public class Sound {
                 gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(volume);
                 isLoaded = true;
-                clip.setFramePosition(0);
+                clip.setFramePosition(position);
+                maxPosition = clip.getFrameLength();
                 clip.start();
                 isPlaying = true;
                 log.info("Sound played");
             }
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex) {
             isLoaded = false;
+            maxPosition = ERROR_PLAY;                                       // Устанавливается в -1 при ошибке
             log.log(Level.SEVERE, null, ex);
         }
     }
@@ -102,6 +113,9 @@ public class Sound {
         }
     }
 
+    public static int getPosition(){
+        return clip.getFramePosition();
+    }
     public static void setVolume(float gain) {       // Про увеличение громкости 
         if (gain < 0.0) {
             gain = 0.0F;                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm

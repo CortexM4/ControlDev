@@ -2277,6 +2277,15 @@ public final class Commands {
      * <code>optional int32 position = 2 [default = 0];</code>
      */
     int getPosition();
+
+    /**
+     * <code>optional int32 maxPosition = 3;</code>
+     */
+    boolean hasMaxPosition();
+    /**
+     * <code>optional int32 maxPosition = 3;</code>
+     */
+    int getMaxPosition();
   }
   /**
    * Protobuf type {@code netcontrol.FairyTale}
@@ -2339,6 +2348,11 @@ public final class Commands {
             case 16: {
               bitField0_ |= 0x00000002;
               position_ = input.readInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              maxPosition_ = input.readInt32();
               break;
             }
           }
@@ -2438,9 +2452,25 @@ public final class Commands {
       return position_;
     }
 
+    public static final int MAXPOSITION_FIELD_NUMBER = 3;
+    private int maxPosition_;
+    /**
+     * <code>optional int32 maxPosition = 3;</code>
+     */
+    public boolean hasMaxPosition() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 maxPosition = 3;</code>
+     */
+    public int getMaxPosition() {
+      return maxPosition_;
+    }
+
     private void initFields() {
       name_ = "";
       position_ = 0;
+      maxPosition_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2465,6 +2495,9 @@ public final class Commands {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, position_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, maxPosition_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -2481,6 +2514,10 @@ public final class Commands {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, position_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, maxPosition_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2603,6 +2640,8 @@ public final class Commands {
         bitField0_ = (bitField0_ & ~0x00000001);
         position_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        maxPosition_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -2639,6 +2678,10 @@ public final class Commands {
           to_bitField0_ |= 0x00000002;
         }
         result.position_ = position_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.maxPosition_ = maxPosition_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2662,6 +2705,9 @@ public final class Commands {
         }
         if (other.hasPosition()) {
           setPosition(other.getPosition());
+        }
+        if (other.hasMaxPosition()) {
+          setMaxPosition(other.getMaxPosition());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2802,6 +2848,38 @@ public final class Commands {
         return this;
       }
 
+      private int maxPosition_ ;
+      /**
+       * <code>optional int32 maxPosition = 3;</code>
+       */
+      public boolean hasMaxPosition() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 maxPosition = 3;</code>
+       */
+      public int getMaxPosition() {
+        return maxPosition_;
+      }
+      /**
+       * <code>optional int32 maxPosition = 3;</code>
+       */
+      public Builder setMaxPosition(int value) {
+        bitField0_ |= 0x00000004;
+        maxPosition_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 maxPosition = 3;</code>
+       */
+      public Builder clearMaxPosition() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        maxPosition_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:netcontrol.FairyTale)
     }
 
@@ -2853,9 +2931,9 @@ public final class Commands {
       "\002(\0162!.netcontrol.DeviceState.Direction\022\r" +
       "\n\005sound\030\002 \001(\002\022\r\n\005power\030\003 \001(\010\" \n\tDirectio",
       "n\022\010\n\004READ\020\001\022\t\n\005WRITE\020\002\"+\n\013StreamSound\022\014\n" +
-      "\004port\030\001 \001(\005\022\016\n\006reload\030\002 \002(\010\".\n\tFairyTale" +
-      "\022\014\n\004name\030\001 \002(\t\022\023\n\010position\030\002 \001(\005:\0010B\nB\010C" +
-      "ommands"
+      "\004port\030\001 \001(\005\022\016\n\006reload\030\002 \002(\010\"C\n\tFairyTale" +
+      "\022\014\n\004name\030\001 \002(\t\022\023\n\010position\030\002 \001(\005:\0010\022\023\n\013m" +
+      "axPosition\030\003 \001(\005B\nB\010Commands"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2892,7 +2970,7 @@ public final class Commands {
     internal_static_netcontrol_FairyTale_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_FairyTale_descriptor,
-        new java.lang.String[] { "Name", "Position", });
+        new java.lang.String[] { "Name", "Position", "MaxPosition", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
