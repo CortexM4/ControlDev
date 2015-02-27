@@ -15,21 +15,32 @@ import netcontrol.Commands.FairyTale;
 public class FairyTaleProcess {
    
     private static final Logger log = Logger.getLogger(FairyTaleProcess.class.getName());
-    private String name;
-    private int position;
+    FairyTale ft;
+    FairyTale.Builder ft_ret = FairyTale.newBuilder();
+    
+    private static final int          UNDEF_POSITION = -1;
     
     public FairyTaleProcess(FairyTale ft){
-        name = ft.getName();
-        position = ft.getPosition();
+        this.ft = ft;
+        ft_ret.setName(ft.getName());
     }
     
     public FairyTale play() {
-        FairyTale.Builder ft = FairyTale.newBuilder();
-        Sound.Sound(name, true, position);
-        ft.setName(name);
-        ft.setMaxPosition(Sound.GetMaxPosition());
-        ft.setPosition(Sound.getPosition());
-        return ft.build();
+        Sound.Sound(ft.getName(), true);
+        ft_ret.setMaxPosition(Sound.GetMaxPosition());
+        ft_ret.setPosition(Sound.getPosition());
+        return ft_ret.build();
+    }
+    
+    public FairyTale get_position() {
+        ft_ret.setPosition(Sound.getPosition());
+        return ft_ret.build();
+    }
+    
+    public FairyTale set_position() {
+        Sound.setPosition(ft.getPosition());
+        ft_ret.setPosition(Sound.getPosition());
+        return ft_ret.build();
     }
     
 }

@@ -22,7 +22,9 @@ message StreamSound {
 }
 
 message FairyTale {
-	required string name = 1;
-	optional int32 position = 2 [default = 0];
-	optional int32 maxPosition = 3;
+	enum Type { PLAY = 1; GET_POSITION = 2; SET_POSITION = 3; }
+	required Type cmd = 1;
+	required string name = 2;
+	optional int32 position = 3;
+	optional int32 maxPosition = 4;
 }

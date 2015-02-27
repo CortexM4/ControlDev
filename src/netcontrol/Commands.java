@@ -2256,34 +2256,43 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required string name = 1;</code>
+     * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
+     */
+    boolean hasCmd();
+    /**
+     * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
+     */
+    netcontrol.Commands.FairyTale.Type getCmd();
+
+    /**
+     * <code>required string name = 2;</code>
      */
     boolean hasName();
     /**
-     * <code>required string name = 1;</code>
+     * <code>required string name = 2;</code>
      */
     java.lang.String getName();
     /**
-     * <code>required string name = 1;</code>
+     * <code>required string name = 2;</code>
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
-     * <code>optional int32 position = 2 [default = 0];</code>
+     * <code>optional int32 position = 3;</code>
      */
     boolean hasPosition();
     /**
-     * <code>optional int32 position = 2 [default = 0];</code>
+     * <code>optional int32 position = 3;</code>
      */
     int getPosition();
 
     /**
-     * <code>optional int32 maxPosition = 3;</code>
+     * <code>optional int32 maxPosition = 4;</code>
      */
     boolean hasMaxPosition();
     /**
-     * <code>optional int32 maxPosition = 3;</code>
+     * <code>optional int32 maxPosition = 4;</code>
      */
     int getMaxPosition();
   }
@@ -2339,19 +2348,30 @@ public final class Commands {
               }
               break;
             }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              name_ = bs;
+            case 8: {
+              int rawValue = input.readEnum();
+              netcontrol.Commands.FairyTale.Type value = netcontrol.Commands.FairyTale.Type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                cmd_ = value;
+              }
               break;
             }
-            case 16: {
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              position_ = input.readInt32();
+              name_ = bs;
               break;
             }
             case 24: {
               bitField0_ |= 0x00000004;
+              position_ = input.readInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
               maxPosition_ = input.readInt32();
               break;
             }
@@ -2394,17 +2414,123 @@ public final class Commands {
       return PARSER;
     }
 
-    private int bitField0_;
-    public static final int NAME_FIELD_NUMBER = 1;
-    private java.lang.Object name_;
     /**
-     * <code>required string name = 1;</code>
+     * Protobuf enum {@code netcontrol.FairyTale.Type}
      */
-    public boolean hasName() {
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>PLAY = 1;</code>
+       */
+      PLAY(0, 1),
+      /**
+       * <code>GET_POSITION = 2;</code>
+       */
+      GET_POSITION(1, 2),
+      /**
+       * <code>SET_POSITION = 3;</code>
+       */
+      SET_POSITION(2, 3),
+      ;
+
+      /**
+       * <code>PLAY = 1;</code>
+       */
+      public static final int PLAY_VALUE = 1;
+      /**
+       * <code>GET_POSITION = 2;</code>
+       */
+      public static final int GET_POSITION_VALUE = 2;
+      /**
+       * <code>SET_POSITION = 3;</code>
+       */
+      public static final int SET_POSITION_VALUE = 3;
+
+
+      public final int getNumber() { return value; }
+
+      public static Type valueOf(int value) {
+        switch (value) {
+          case 1: return PLAY;
+          case 2: return GET_POSITION;
+          case 3: return SET_POSITION;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return netcontrol.Commands.FairyTale.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private Type(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:netcontrol.FairyTale.Type)
+    }
+
+    private int bitField0_;
+    public static final int CMD_FIELD_NUMBER = 1;
+    private netcontrol.Commands.FairyTale.Type cmd_;
+    /**
+     * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
+     */
+    public boolean hasCmd() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string name = 1;</code>
+     * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
+     */
+    public netcontrol.Commands.FairyTale.Type getCmd() {
+      return cmd_;
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    private java.lang.Object name_;
+    /**
+     * <code>required string name = 2;</code>
+     */
+    public boolean hasName() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string name = 2;</code>
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -2421,7 +2547,7 @@ public final class Commands {
       }
     }
     /**
-     * <code>required string name = 1;</code>
+     * <code>required string name = 2;</code>
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -2437,37 +2563,38 @@ public final class Commands {
       }
     }
 
-    public static final int POSITION_FIELD_NUMBER = 2;
+    public static final int POSITION_FIELD_NUMBER = 3;
     private int position_;
     /**
-     * <code>optional int32 position = 2 [default = 0];</code>
+     * <code>optional int32 position = 3;</code>
      */
     public boolean hasPosition() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional int32 position = 2 [default = 0];</code>
+     * <code>optional int32 position = 3;</code>
      */
     public int getPosition() {
       return position_;
     }
 
-    public static final int MAXPOSITION_FIELD_NUMBER = 3;
+    public static final int MAXPOSITION_FIELD_NUMBER = 4;
     private int maxPosition_;
     /**
-     * <code>optional int32 maxPosition = 3;</code>
+     * <code>optional int32 maxPosition = 4;</code>
      */
     public boolean hasMaxPosition() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 maxPosition = 3;</code>
+     * <code>optional int32 maxPosition = 4;</code>
      */
     public int getMaxPosition() {
       return maxPosition_;
     }
 
     private void initFields() {
+      cmd_ = netcontrol.Commands.FairyTale.Type.PLAY;
       name_ = "";
       position_ = 0;
       maxPosition_ = 0;
@@ -2478,6 +2605,10 @@ public final class Commands {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (!hasCmd()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasName()) {
         memoizedIsInitialized = 0;
         return false;
@@ -2490,13 +2621,16 @@ public final class Commands {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getNameBytes());
+        output.writeEnum(1, cmd_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, position_);
+        output.writeBytes(2, getNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, maxPosition_);
+        output.writeInt32(3, position_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(4, maxPosition_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2509,15 +2643,19 @@ public final class Commands {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getNameBytes());
+          .computeEnumSize(1, cmd_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, position_);
+          .computeBytesSize(2, getNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, maxPosition_);
+          .computeInt32Size(3, position_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, maxPosition_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2636,12 +2774,14 @@ public final class Commands {
 
       public Builder clear() {
         super.clear();
-        name_ = "";
+        cmd_ = netcontrol.Commands.FairyTale.Type.PLAY;
         bitField0_ = (bitField0_ & ~0x00000001);
-        position_ = 0;
+        name_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        maxPosition_ = 0;
+        position_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        maxPosition_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -2673,13 +2813,17 @@ public final class Commands {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.name_ = name_;
+        result.cmd_ = cmd_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.position_ = position_;
+        result.name_ = name_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
+        }
+        result.position_ = position_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
         }
         result.maxPosition_ = maxPosition_;
         result.bitField0_ = to_bitField0_;
@@ -2698,8 +2842,11 @@ public final class Commands {
 
       public Builder mergeFrom(netcontrol.Commands.FairyTale other) {
         if (other == netcontrol.Commands.FairyTale.getDefaultInstance()) return this;
+        if (other.hasCmd()) {
+          setCmd(other.getCmd());
+        }
         if (other.hasName()) {
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
           name_ = other.name_;
           onChanged();
         }
@@ -2714,6 +2861,10 @@ public final class Commands {
       }
 
       public final boolean isInitialized() {
+        if (!hasCmd()) {
+          
+          return false;
+        }
         if (!hasName()) {
           
           return false;
@@ -2740,15 +2891,50 @@ public final class Commands {
       }
       private int bitField0_;
 
-      private java.lang.Object name_ = "";
+      private netcontrol.Commands.FairyTale.Type cmd_ = netcontrol.Commands.FairyTale.Type.PLAY;
       /**
-       * <code>required string name = 1;</code>
+       * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
        */
-      public boolean hasName() {
+      public boolean hasCmd() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string name = 1;</code>
+       * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
+       */
+      public netcontrol.Commands.FairyTale.Type getCmd() {
+        return cmd_;
+      }
+      /**
+       * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
+       */
+      public Builder setCmd(netcontrol.Commands.FairyTale.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        cmd_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .netcontrol.FairyTale.Type cmd = 1;</code>
+       */
+      public Builder clearCmd() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        cmd_ = netcontrol.Commands.FairyTale.Type.PLAY;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>required string name = 2;</code>
+       */
+      public boolean hasName() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string name = 2;</code>
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -2765,7 +2951,7 @@ public final class Commands {
         }
       }
       /**
-       * <code>required string name = 1;</code>
+       * <code>required string name = 2;</code>
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -2781,36 +2967,36 @@ public final class Commands {
         }
       }
       /**
-       * <code>required string name = 1;</code>
+       * <code>required string name = 2;</code>
        */
       public Builder setName(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         name_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string name = 1;</code>
+       * <code>required string name = 2;</code>
        */
       public Builder clearName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         name_ = getDefaultInstance().getName();
         onChanged();
         return this;
       }
       /**
-       * <code>required string name = 1;</code>
+       * <code>required string name = 2;</code>
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         name_ = value;
         onChanged();
         return this;
@@ -2818,31 +3004,31 @@ public final class Commands {
 
       private int position_ ;
       /**
-       * <code>optional int32 position = 2 [default = 0];</code>
+       * <code>optional int32 position = 3;</code>
        */
       public boolean hasPosition() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 position = 2 [default = 0];</code>
+       * <code>optional int32 position = 3;</code>
        */
       public int getPosition() {
         return position_;
       }
       /**
-       * <code>optional int32 position = 2 [default = 0];</code>
+       * <code>optional int32 position = 3;</code>
        */
       public Builder setPosition(int value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         position_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 position = 2 [default = 0];</code>
+       * <code>optional int32 position = 3;</code>
        */
       public Builder clearPosition() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         position_ = 0;
         onChanged();
         return this;
@@ -2850,31 +3036,31 @@ public final class Commands {
 
       private int maxPosition_ ;
       /**
-       * <code>optional int32 maxPosition = 3;</code>
+       * <code>optional int32 maxPosition = 4;</code>
        */
       public boolean hasMaxPosition() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 maxPosition = 3;</code>
+       * <code>optional int32 maxPosition = 4;</code>
        */
       public int getMaxPosition() {
         return maxPosition_;
       }
       /**
-       * <code>optional int32 maxPosition = 3;</code>
+       * <code>optional int32 maxPosition = 4;</code>
        */
       public Builder setMaxPosition(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         maxPosition_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 maxPosition = 3;</code>
+       * <code>optional int32 maxPosition = 4;</code>
        */
       public Builder clearMaxPosition() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         maxPosition_ = 0;
         onChanged();
         return this;
@@ -2931,9 +3117,12 @@ public final class Commands {
       "\002(\0162!.netcontrol.DeviceState.Direction\022\r" +
       "\n\005sound\030\002 \001(\002\022\r\n\005power\030\003 \001(\010\" \n\tDirectio",
       "n\022\010\n\004READ\020\001\022\t\n\005WRITE\020\002\"+\n\013StreamSound\022\014\n" +
-      "\004port\030\001 \001(\005\022\016\n\006reload\030\002 \002(\010\"C\n\tFairyTale" +
-      "\022\014\n\004name\030\001 \002(\t\022\023\n\010position\030\002 \001(\005:\0010\022\023\n\013m" +
-      "axPosition\030\003 \001(\005B\nB\010Commands"
+      "\004port\030\001 \001(\005\022\016\n\006reload\030\002 \002(\010\"\237\001\n\tFairyTal" +
+      "e\022\'\n\003cmd\030\001 \002(\0162\032.netcontrol.FairyTale.Ty" +
+      "pe\022\014\n\004name\030\002 \002(\t\022\020\n\010position\030\003 \001(\005\022\023\n\013ma" +
+      "xPosition\030\004 \001(\005\"4\n\004Type\022\010\n\004PLAY\020\001\022\020\n\014GET" +
+      "_POSITION\020\002\022\020\n\014SET_POSITION\020\003B\nB\010Command" +
+      "s"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2970,7 +3159,7 @@ public final class Commands {
     internal_static_netcontrol_FairyTale_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_FairyTale_descriptor,
-        new java.lang.String[] { "Name", "Position", "MaxPosition", });
+        new java.lang.String[] { "Cmd", "Name", "Position", "MaxPosition", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -29,21 +29,23 @@ public class Sound {
     private static final Logger log = Logger.getLogger(Sound.class.getName());
 
     private static boolean isLoaded = false;                          // Успешно ли открыт поток
-    private static boolean isPlaying = false;                          // Играет ли сейчас что-либо
+    private static boolean isPlaying = false;                         // Играет ли сейчас что-либо
+    public static boolean IsPlaying() {
+        return isPlaying;
+    }
 
     private static FloatControl gainControl;
     private static float volume;                                     // Хранение значения усиления (Как-то криво)
     private static Clip clip;
     
     private static int maxPosition;                                  // Устанавливается при проигрывании локальный файлов (сказок)
-                                                                     // и отсылается клиенту, чтобы была возможность изминять позицию
+    public static int GetMaxPosition() {                             // и отсылается клиенту, чтобы была возможность изминять позицию
+        return maxPosition;
+    }                                                                 
 
     private static final int          ERROR_PLAY = -1;
     
     
-    public static int GetMaxPosition() {
-        return maxPosition;
-    }
     public static void InitGain(float gain) {
         if (gain > 1.0F) {
             gain = 1.0F;
@@ -53,7 +55,7 @@ public class Sound {
         volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
     }
 
-    public static void Sound(String path, boolean reload, int position) {
+    public static void Sound(String path, boolean reload) {
         try {
             if (isPlaying && reload) {
                 synchronized (clip) {
@@ -70,7 +72,7 @@ public class Sound {
                 gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(volume);
                 isLoaded = true;
-                clip.setFramePosition(position);
+                clip.setFramePosition(0);
                 maxPosition = clip.getFrameLength();
                 clip.start();
                 isPlaying = true;
@@ -116,6 +118,11 @@ public class Sound {
     public static int getPosition(){
         return clip.getFramePosition();
     }
+    
+    public static void setPosition(int position){
+        clip.setFramePosition(position);
+    }
+    
     public static void setVolume(float gain) {       // Про увеличение громкости 
         if (gain < 0.0) {
             gain = 0.0F;                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm

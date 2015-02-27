@@ -39,7 +39,9 @@ public class NetworkControl {
         
         /**********Инициализация начальных параметров************/
         Sound.InitGain(0.5F);        // Вообще борода
-        Sound.Sound("files.wav", true, 0);   // Проигрывание начального звука для инициализации Clip
+        Sound.Sound("files.wav", true);   // Проигрывание начального звука для инициализации Clip
+        //Sound.Sound("../story/Moidodyr.wav", true, 0);
+
         while (true) {
             net.ListenSocket();
         }
@@ -88,10 +90,21 @@ public class NetworkControl {
                     break;
                 case FAIRY_TALE :                                           // Сказки
                     log.info("Command: FAIRY_TALE");
-                    FairyTaleProcess ftp = new FairyTaleProcess(packet.getFairyTale()); 
-//                    float vol = Sound.getVolume();
-//                    int svol = Float.floatToIntBits(vol);
-//                    outStream.writeInt(svol);
+                    Commands.FairyTale ft = packet.getFairyTale();
+                    FairyTaleProcess ftp = new FairyTaleProcess(ft); 
+                    switch(ft.getCmd()) {
+                        case PLAY:
+                            packet_return.setFairyTale(ftp.play());
+                            break;
+                        case GET_POSITION:
+                            packet_return.setFairyTale(ftp.get_position());
+                            break;
+                        case SET_POSITION:
+                            packet_return.setFairyTale(ftp.set_position());
+                            break;
+                    }
+                    packet_return.setType(BaseCommands.Type.FAIRY_TALE);
+                    packet_return.build().writeTo(outStream);
                     break;
 //                case SET_VOLUME:
 //                    byte[] volu = new byte[4];
