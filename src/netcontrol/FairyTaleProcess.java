@@ -23,10 +23,11 @@ public class FairyTaleProcess {
     public FairyTaleProcess(FairyTale ft){
         this.ft = ft;
         ft_ret.setName(ft.getName());
+        ft_ret.setCmd(FairyTale.Type.PLAY);
     }
     
     public FairyTale play() {
-        Sound.Sound(ft.getName(), true);
+        Sound.playMP3file(ft.getName(), true);
         ft_ret.setMaxPosition(Sound.GetMaxPosition());
         ft_ret.setPosition(Sound.getPosition());
         return ft_ret.build();

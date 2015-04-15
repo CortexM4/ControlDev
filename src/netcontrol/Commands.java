@@ -59,6 +59,19 @@ public final class Commands {
      * <code>optional .netcontrol.FairyTale fairyTale = 4;</code>
      */
     netcontrol.Commands.FairyTaleOrBuilder getFairyTaleOrBuilder();
+
+    /**
+     * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+     */
+    boolean hasVideoStream();
+    /**
+     * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+     */
+    netcontrol.Commands.VideoStream getVideoStream();
+    /**
+     * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+     */
+    netcontrol.Commands.VideoStreamOrBuilder getVideoStreamOrBuilder();
   }
   /**
    * Protobuf type {@code netcontrol.BaseCommands}
@@ -162,6 +175,19 @@ public final class Commands {
               bitField0_ |= 0x00000008;
               break;
             }
+            case 42: {
+              netcontrol.Commands.VideoStream.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                subBuilder = videoStream_.toBuilder();
+              }
+              videoStream_ = input.readMessage(netcontrol.Commands.VideoStream.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(videoStream_);
+                videoStream_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000010;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -218,6 +244,10 @@ public final class Commands {
        * <code>FAIRY_TALE = 3;</code>
        */
       FAIRY_TALE(2, 3),
+      /**
+       * <code>VIDEO_STREAM = 4;</code>
+       */
+      VIDEO_STREAM(3, 4),
       ;
 
       /**
@@ -232,6 +262,10 @@ public final class Commands {
        * <code>FAIRY_TALE = 3;</code>
        */
       public static final int FAIRY_TALE_VALUE = 3;
+      /**
+       * <code>VIDEO_STREAM = 4;</code>
+       */
+      public static final int VIDEO_STREAM_VALUE = 4;
 
 
       public final int getNumber() { return value; }
@@ -241,6 +275,7 @@ public final class Commands {
           case 1: return DEVICE_STATE;
           case 2: return STREAM_SOUND;
           case 3: return FAIRY_TALE;
+          case 4: return VIDEO_STREAM;
           default: return null;
         }
       }
@@ -371,11 +406,33 @@ public final class Commands {
       return fairyTale_;
     }
 
+    public static final int VIDEOSTREAM_FIELD_NUMBER = 5;
+    private netcontrol.Commands.VideoStream videoStream_;
+    /**
+     * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+     */
+    public boolean hasVideoStream() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+     */
+    public netcontrol.Commands.VideoStream getVideoStream() {
+      return videoStream_;
+    }
+    /**
+     * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+     */
+    public netcontrol.Commands.VideoStreamOrBuilder getVideoStreamOrBuilder() {
+      return videoStream_;
+    }
+
     private void initFields() {
       type_ = netcontrol.Commands.BaseCommands.Type.DEVICE_STATE;
       deviceState_ = netcontrol.Commands.DeviceState.getDefaultInstance();
       streamSound_ = netcontrol.Commands.StreamSound.getDefaultInstance();
       fairyTale_ = netcontrol.Commands.FairyTale.getDefaultInstance();
+      videoStream_ = netcontrol.Commands.VideoStream.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -405,6 +462,12 @@ public final class Commands {
           return false;
         }
       }
+      if (hasVideoStream()) {
+        if (!getVideoStream().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -423,6 +486,9 @@ public final class Commands {
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeMessage(4, fairyTale_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeMessage(5, videoStream_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -448,6 +514,10 @@ public final class Commands {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, fairyTale_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, videoStream_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -561,6 +631,7 @@ public final class Commands {
           getDeviceStateFieldBuilder();
           getStreamSoundFieldBuilder();
           getFairyTaleFieldBuilder();
+          getVideoStreamFieldBuilder();
         }
       }
       private static Builder create() {
@@ -589,6 +660,12 @@ public final class Commands {
           fairyTaleBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
+        if (videoStreamBuilder_ == null) {
+          videoStream_ = netcontrol.Commands.VideoStream.getDefaultInstance();
+        } else {
+          videoStreamBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -645,6 +722,14 @@ public final class Commands {
         } else {
           result.fairyTale_ = fairyTaleBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        if (videoStreamBuilder_ == null) {
+          result.videoStream_ = videoStream_;
+        } else {
+          result.videoStream_ = videoStreamBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -673,6 +758,9 @@ public final class Commands {
         if (other.hasFairyTale()) {
           mergeFairyTale(other.getFairyTale());
         }
+        if (other.hasVideoStream()) {
+          mergeVideoStream(other.getVideoStream());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -696,6 +784,12 @@ public final class Commands {
         }
         if (hasFairyTale()) {
           if (!getFairyTale().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasVideoStream()) {
+          if (!getVideoStream().isInitialized()) {
             
             return false;
           }
@@ -1103,6 +1197,122 @@ public final class Commands {
           fairyTale_ = null;
         }
         return fairyTaleBuilder_;
+      }
+
+      private netcontrol.Commands.VideoStream videoStream_ = netcontrol.Commands.VideoStream.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          netcontrol.Commands.VideoStream, netcontrol.Commands.VideoStream.Builder, netcontrol.Commands.VideoStreamOrBuilder> videoStreamBuilder_;
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public boolean hasVideoStream() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public netcontrol.Commands.VideoStream getVideoStream() {
+        if (videoStreamBuilder_ == null) {
+          return videoStream_;
+        } else {
+          return videoStreamBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public Builder setVideoStream(netcontrol.Commands.VideoStream value) {
+        if (videoStreamBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          videoStream_ = value;
+          onChanged();
+        } else {
+          videoStreamBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public Builder setVideoStream(
+          netcontrol.Commands.VideoStream.Builder builderForValue) {
+        if (videoStreamBuilder_ == null) {
+          videoStream_ = builderForValue.build();
+          onChanged();
+        } else {
+          videoStreamBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public Builder mergeVideoStream(netcontrol.Commands.VideoStream value) {
+        if (videoStreamBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              videoStream_ != netcontrol.Commands.VideoStream.getDefaultInstance()) {
+            videoStream_ =
+              netcontrol.Commands.VideoStream.newBuilder(videoStream_).mergeFrom(value).buildPartial();
+          } else {
+            videoStream_ = value;
+          }
+          onChanged();
+        } else {
+          videoStreamBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public Builder clearVideoStream() {
+        if (videoStreamBuilder_ == null) {
+          videoStream_ = netcontrol.Commands.VideoStream.getDefaultInstance();
+          onChanged();
+        } else {
+          videoStreamBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public netcontrol.Commands.VideoStream.Builder getVideoStreamBuilder() {
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return getVideoStreamFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      public netcontrol.Commands.VideoStreamOrBuilder getVideoStreamOrBuilder() {
+        if (videoStreamBuilder_ != null) {
+          return videoStreamBuilder_.getMessageOrBuilder();
+        } else {
+          return videoStream_;
+        }
+      }
+      /**
+       * <code>optional .netcontrol.VideoStream videoStream = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          netcontrol.Commands.VideoStream, netcontrol.Commands.VideoStream.Builder, netcontrol.Commands.VideoStreamOrBuilder> 
+          getVideoStreamFieldBuilder() {
+        if (videoStreamBuilder_ == null) {
+          videoStreamBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              netcontrol.Commands.VideoStream, netcontrol.Commands.VideoStream.Builder, netcontrol.Commands.VideoStreamOrBuilder>(
+                  getVideoStream(),
+                  getParentForChildren(),
+                  isClean());
+          videoStream_ = null;
+        }
+        return videoStreamBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:netcontrol.BaseCommands)
@@ -2279,22 +2489,22 @@ public final class Commands {
         getNameBytes();
 
     /**
-     * <code>optional int32 position = 3;</code>
+     * <code>optional int64 position = 3;</code>
      */
     boolean hasPosition();
     /**
-     * <code>optional int32 position = 3;</code>
+     * <code>optional int64 position = 3;</code>
      */
-    int getPosition();
+    long getPosition();
 
     /**
-     * <code>optional int32 maxPosition = 4;</code>
+     * <code>optional int64 maxPosition = 4;</code>
      */
     boolean hasMaxPosition();
     /**
-     * <code>optional int32 maxPosition = 4;</code>
+     * <code>optional int64 maxPosition = 4;</code>
      */
-    int getMaxPosition();
+    long getMaxPosition();
   }
   /**
    * Protobuf type {@code netcontrol.FairyTale}
@@ -2367,12 +2577,12 @@ public final class Commands {
             }
             case 24: {
               bitField0_ |= 0x00000004;
-              position_ = input.readInt32();
+              position_ = input.readInt64();
               break;
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              maxPosition_ = input.readInt32();
+              maxPosition_ = input.readInt64();
               break;
             }
           }
@@ -2564,40 +2774,40 @@ public final class Commands {
     }
 
     public static final int POSITION_FIELD_NUMBER = 3;
-    private int position_;
+    private long position_;
     /**
-     * <code>optional int32 position = 3;</code>
+     * <code>optional int64 position = 3;</code>
      */
     public boolean hasPosition() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional int32 position = 3;</code>
+     * <code>optional int64 position = 3;</code>
      */
-    public int getPosition() {
+    public long getPosition() {
       return position_;
     }
 
     public static final int MAXPOSITION_FIELD_NUMBER = 4;
-    private int maxPosition_;
+    private long maxPosition_;
     /**
-     * <code>optional int32 maxPosition = 4;</code>
+     * <code>optional int64 maxPosition = 4;</code>
      */
     public boolean hasMaxPosition() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 maxPosition = 4;</code>
+     * <code>optional int64 maxPosition = 4;</code>
      */
-    public int getMaxPosition() {
+    public long getMaxPosition() {
       return maxPosition_;
     }
 
     private void initFields() {
       cmd_ = netcontrol.Commands.FairyTale.Type.PLAY;
       name_ = "";
-      position_ = 0;
-      maxPosition_ = 0;
+      position_ = 0L;
+      maxPosition_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2627,10 +2837,10 @@ public final class Commands {
         output.writeBytes(2, getNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, position_);
+        output.writeInt64(3, position_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, maxPosition_);
+        output.writeInt64(4, maxPosition_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2651,11 +2861,11 @@ public final class Commands {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, position_);
+          .computeInt64Size(3, position_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, maxPosition_);
+          .computeInt64Size(4, maxPosition_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2778,9 +2988,9 @@ public final class Commands {
         bitField0_ = (bitField0_ & ~0x00000001);
         name_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        position_ = 0;
+        position_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
-        maxPosition_ = 0;
+        maxPosition_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
@@ -3002,66 +3212,66 @@ public final class Commands {
         return this;
       }
 
-      private int position_ ;
+      private long position_ ;
       /**
-       * <code>optional int32 position = 3;</code>
+       * <code>optional int64 position = 3;</code>
        */
       public boolean hasPosition() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 position = 3;</code>
+       * <code>optional int64 position = 3;</code>
        */
-      public int getPosition() {
+      public long getPosition() {
         return position_;
       }
       /**
-       * <code>optional int32 position = 3;</code>
+       * <code>optional int64 position = 3;</code>
        */
-      public Builder setPosition(int value) {
+      public Builder setPosition(long value) {
         bitField0_ |= 0x00000004;
         position_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 position = 3;</code>
+       * <code>optional int64 position = 3;</code>
        */
       public Builder clearPosition() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        position_ = 0;
+        position_ = 0L;
         onChanged();
         return this;
       }
 
-      private int maxPosition_ ;
+      private long maxPosition_ ;
       /**
-       * <code>optional int32 maxPosition = 4;</code>
+       * <code>optional int64 maxPosition = 4;</code>
        */
       public boolean hasMaxPosition() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 maxPosition = 4;</code>
+       * <code>optional int64 maxPosition = 4;</code>
        */
-      public int getMaxPosition() {
+      public long getMaxPosition() {
         return maxPosition_;
       }
       /**
-       * <code>optional int32 maxPosition = 4;</code>
+       * <code>optional int64 maxPosition = 4;</code>
        */
-      public Builder setMaxPosition(int value) {
+      public Builder setMaxPosition(long value) {
         bitField0_ |= 0x00000008;
         maxPosition_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 maxPosition = 4;</code>
+       * <code>optional int64 maxPosition = 4;</code>
        */
       public Builder clearMaxPosition() {
         bitField0_ = (bitField0_ & ~0x00000008);
-        maxPosition_ = 0;
+        maxPosition_ = 0L;
         onChanged();
         return this;
       }
@@ -3075,6 +3285,411 @@ public final class Commands {
     }
 
     // @@protoc_insertion_point(class_scope:netcontrol.FairyTale)
+  }
+
+  public interface VideoStreamOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:netcontrol.VideoStream)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required bool play = 1;</code>
+     */
+    boolean hasPlay();
+    /**
+     * <code>required bool play = 1;</code>
+     */
+    boolean getPlay();
+  }
+  /**
+   * Protobuf type {@code netcontrol.VideoStream}
+   */
+  public static final class VideoStream extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:netcontrol.VideoStream)
+      VideoStreamOrBuilder {
+    // Use VideoStream.newBuilder() to construct.
+    private VideoStream(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private VideoStream(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final VideoStream defaultInstance;
+    public static VideoStream getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public VideoStream getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private VideoStream(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              play_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return netcontrol.Commands.internal_static_netcontrol_VideoStream_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return netcontrol.Commands.internal_static_netcontrol_VideoStream_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              netcontrol.Commands.VideoStream.class, netcontrol.Commands.VideoStream.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<VideoStream> PARSER =
+        new com.google.protobuf.AbstractParser<VideoStream>() {
+      public VideoStream parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new VideoStream(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<VideoStream> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int PLAY_FIELD_NUMBER = 1;
+    private boolean play_;
+    /**
+     * <code>required bool play = 1;</code>
+     */
+    public boolean hasPlay() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required bool play = 1;</code>
+     */
+    public boolean getPlay() {
+      return play_;
+    }
+
+    private void initFields() {
+      play_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasPlay()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, play_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, play_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static netcontrol.Commands.VideoStream parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static netcontrol.Commands.VideoStream parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static netcontrol.Commands.VideoStream parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static netcontrol.Commands.VideoStream parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static netcontrol.Commands.VideoStream parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static netcontrol.Commands.VideoStream parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static netcontrol.Commands.VideoStream parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static netcontrol.Commands.VideoStream parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static netcontrol.Commands.VideoStream parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static netcontrol.Commands.VideoStream parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(netcontrol.Commands.VideoStream prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code netcontrol.VideoStream}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:netcontrol.VideoStream)
+        netcontrol.Commands.VideoStreamOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return netcontrol.Commands.internal_static_netcontrol_VideoStream_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return netcontrol.Commands.internal_static_netcontrol_VideoStream_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                netcontrol.Commands.VideoStream.class, netcontrol.Commands.VideoStream.Builder.class);
+      }
+
+      // Construct using netcontrol.Commands.VideoStream.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        play_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return netcontrol.Commands.internal_static_netcontrol_VideoStream_descriptor;
+      }
+
+      public netcontrol.Commands.VideoStream getDefaultInstanceForType() {
+        return netcontrol.Commands.VideoStream.getDefaultInstance();
+      }
+
+      public netcontrol.Commands.VideoStream build() {
+        netcontrol.Commands.VideoStream result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public netcontrol.Commands.VideoStream buildPartial() {
+        netcontrol.Commands.VideoStream result = new netcontrol.Commands.VideoStream(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.play_ = play_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof netcontrol.Commands.VideoStream) {
+          return mergeFrom((netcontrol.Commands.VideoStream)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(netcontrol.Commands.VideoStream other) {
+        if (other == netcontrol.Commands.VideoStream.getDefaultInstance()) return this;
+        if (other.hasPlay()) {
+          setPlay(other.getPlay());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasPlay()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        netcontrol.Commands.VideoStream parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (netcontrol.Commands.VideoStream) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean play_ ;
+      /**
+       * <code>required bool play = 1;</code>
+       */
+      public boolean hasPlay() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required bool play = 1;</code>
+       */
+      public boolean getPlay() {
+        return play_;
+      }
+      /**
+       * <code>required bool play = 1;</code>
+       */
+      public Builder setPlay(boolean value) {
+        bitField0_ |= 0x00000001;
+        play_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required bool play = 1;</code>
+       */
+      public Builder clearPlay() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        play_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:netcontrol.VideoStream)
+    }
+
+    static {
+      defaultInstance = new VideoStream(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:netcontrol.VideoStream)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
@@ -3097,6 +3712,11 @@ public final class Commands {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_netcontrol_FairyTale_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_netcontrol_VideoStream_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_netcontrol_VideoStream_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -3106,23 +3726,25 @@ public final class Commands {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\030Cubie/BaseCommands.proto\022\nnetcontrol\"\375" +
-      "\001\n\014BaseCommands\022+\n\004type\030\001 \002(\0162\035.netcontr" +
+      "\n\030Cubie/BaseCommands.proto\022\nnetcontrol\"\275" +
+      "\002\n\014BaseCommands\022+\n\004type\030\001 \002(\0162\035.netcontr" +
       "ol.BaseCommands.Type\022,\n\013deviceState\030\002 \001(" +
       "\0132\027.netcontrol.DeviceState\022,\n\013streamSoun" +
       "d\030\003 \001(\0132\027.netcontrol.StreamSound\022(\n\tfair" +
-      "yTale\030\004 \001(\0132\025.netcontrol.FairyTale\":\n\004Ty" +
-      "pe\022\020\n\014DEVICE_STATE\020\001\022\020\n\014STREAM_SOUND\020\002\022\016" +
-      "\n\nFAIRY_TALE\020\003\"~\n\013DeviceState\022/\n\004type\030\001 " +
-      "\002(\0162!.netcontrol.DeviceState.Direction\022\r" +
-      "\n\005sound\030\002 \001(\002\022\r\n\005power\030\003 \001(\010\" \n\tDirectio",
-      "n\022\010\n\004READ\020\001\022\t\n\005WRITE\020\002\"+\n\013StreamSound\022\014\n" +
-      "\004port\030\001 \001(\005\022\016\n\006reload\030\002 \002(\010\"\237\001\n\tFairyTal" +
-      "e\022\'\n\003cmd\030\001 \002(\0162\032.netcontrol.FairyTale.Ty" +
-      "pe\022\014\n\004name\030\002 \002(\t\022\020\n\010position\030\003 \001(\005\022\023\n\013ma" +
-      "xPosition\030\004 \001(\005\"4\n\004Type\022\010\n\004PLAY\020\001\022\020\n\014GET" +
-      "_POSITION\020\002\022\020\n\014SET_POSITION\020\003B\nB\010Command" +
-      "s"
+      "yTale\030\004 \001(\0132\025.netcontrol.FairyTale\022,\n\013vi" +
+      "deoStream\030\005 \001(\0132\027.netcontrol.VideoStream" +
+      "\"L\n\004Type\022\020\n\014DEVICE_STATE\020\001\022\020\n\014STREAM_SOU" +
+      "ND\020\002\022\016\n\nFAIRY_TALE\020\003\022\020\n\014VIDEO_STREAM\020\004\"~" +
+      "\n\013DeviceState\022/\n\004type\030\001 \002(\0162!.netcontrol",
+      ".DeviceState.Direction\022\r\n\005sound\030\002 \001(\002\022\r\n" +
+      "\005power\030\003 \001(\010\" \n\tDirection\022\010\n\004READ\020\001\022\t\n\005W" +
+      "RITE\020\002\"+\n\013StreamSound\022\014\n\004port\030\001 \001(\005\022\016\n\006r" +
+      "eload\030\002 \002(\010\"\237\001\n\tFairyTale\022\'\n\003cmd\030\001 \002(\0162\032" +
+      ".netcontrol.FairyTale.Type\022\014\n\004name\030\002 \002(\t" +
+      "\022\020\n\010position\030\003 \001(\003\022\023\n\013maxPosition\030\004 \001(\003\"" +
+      "4\n\004Type\022\010\n\004PLAY\020\001\022\020\n\014GET_POSITION\020\002\022\020\n\014S" +
+      "ET_POSITION\020\003\"\033\n\013VideoStream\022\014\n\004play\030\001 \002" +
+      "(\010B\nB\010Commands"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3141,7 +3763,7 @@ public final class Commands {
     internal_static_netcontrol_BaseCommands_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_BaseCommands_descriptor,
-        new java.lang.String[] { "Type", "DeviceState", "StreamSound", "FairyTale", });
+        new java.lang.String[] { "Type", "DeviceState", "StreamSound", "FairyTale", "VideoStream", });
     internal_static_netcontrol_DeviceState_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_netcontrol_DeviceState_fieldAccessorTable = new
@@ -3160,6 +3782,12 @@ public final class Commands {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_netcontrol_FairyTale_descriptor,
         new java.lang.String[] { "Cmd", "Name", "Position", "MaxPosition", });
+    internal_static_netcontrol_VideoStream_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_netcontrol_VideoStream_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_netcontrol_VideoStream_descriptor,
+        new java.lang.String[] { "Play", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

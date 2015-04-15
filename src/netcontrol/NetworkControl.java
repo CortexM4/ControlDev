@@ -9,6 +9,7 @@ package netcontrol;
  *
  * @author Crtx
  */
+import au.edu.jcu.v4l4j.exceptions.V4L4JException;
 import com.google.protobuf.CodedInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.net.Socket;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import netcontrol.Commands.BaseCommands;
 
 public class NetworkControl {
@@ -29,8 +31,10 @@ public class NetworkControl {
     private Socket                    clientConnection;
     private int                       port = 4444;
     
+    private static VideoStreamProcess vsp;
+    
 
-    private static final int                ERROR_CMD       = 0;
+    private static final int          ERROR_CMD       = 0;
 
     public static void main(String[] args) throws InterruptedException, IOException, LineUnavailableException {
 
@@ -38,9 +42,14 @@ public class NetworkControl {
         net = new NetworkControl();
         
         /**********Инициализация начальных параметров************/
-        Sound.InitGain(0.5F);        // Вообще борода
-        Sound.Sound("files.wav", true);   // Проигрывание начального звука для инициализации Clip
-        //Sound.Sound("../story/Moidodyr.wav", true, 0);
+        Sound.playMP3file("file.mp3", true);                                         // Проигрывание начального звука для инициализации Clip
+        
+        /*try {
+            vsp = new VideoStreamProcess("/dev/video0", 640, 480, 8080, 15);    // Подготовка для стриминга видео с камеры
+                                                                                // dev, width, height, port, fps
+        } catch (V4L4JException ex) {
+            log.log(Level.SEVERE, null, ex);
+        }*/
 
         while (true) {
             net.ListenSocket();
@@ -106,13 +115,17 @@ public class NetworkControl {
                     packet_return.setType(BaseCommands.Type.FAIRY_TALE);
                     packet_return.build().writeTo(outStream);
                     break;
-//                case SET_VOLUME:
-//                    byte[] volu = new byte[4];
-//                    inStream.read(volu);
-//                    int volm = ByteBuffer.wrap(volu).getInt();
-//                    float set_vol = Float.intBitsToFloat(volm);
-//                    Sound.setVolume(set_vol);
-//                    break;
+                case VIDEO_STREAM:                                              // Запуск/останов передачи видео
+                    log.info("Command: VIDEO_STREAM");
+                    Commands.VideoStream vs = packet.getVideoStream();
+                    if(vs.getPlay())
+                        vsp.start();
+                    else if(!vs.getPlay())
+                        vsp.stop();
+                    packet_return.setVideoStream(vs);
+                    packet_return.setType(BaseCommands.Type.VIDEO_STREAM);
+                    packet_return.build().writeTo(outStream);
+                    break;
                     
                 default : outStream.write(ERROR_CMD);
             }

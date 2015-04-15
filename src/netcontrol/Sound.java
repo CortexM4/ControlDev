@@ -7,18 +7,29 @@ package netcontrol;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Port;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javazoom.jl.player.JavaSoundAudioDevice;
+import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 
 /**
  *
@@ -28,34 +39,28 @@ public class Sound {
 
     private static final Logger log = Logger.getLogger(Sound.class.getName());
 
+    private static boolean isMP3;                                     // Указывает какой формат играет (Ебануто в корне. Надо к интерфейсам привести)
     private static boolean isLoaded = false;                          // Успешно ли открыт поток
     private static boolean isPlaying = false;                         // Играет ли сейчас что-либо
     public static boolean IsPlaying() {
         return isPlaying;
     }
-
-    private static FloatControl gainControl;
-    private static float volume;                                     // Хранение значения усиления (Как-то криво)
     private static Clip clip;
+    private static PlayerEx player;
     
-    private static int maxPosition;                                  // Устанавливается при проигрывании локальный файлов (сказок)
-    public static int GetMaxPosition() {                             // и отсылается клиенту, чтобы была возможность изминять позицию
+    private static long maxPosition;                                  // Устанавливается при проигрывании локальный файлов (сказок)
+    public static long GetMaxPosition() {                             // и отсылается клиенту, чтобы была возможность изминять позицию
         return maxPosition;
     }                                                                 
 
     private static final int          ERROR_PLAY = -1;
     
-    
-    public static void InitGain(float gain) {
-        if (gain > 1.0F) {
-            gain = 1.0F;
-        } else if (gain < 0.0F) {
-            gain = 0.0F;
-        }
-        volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-    }
 
-    public static void Sound(String path, boolean reload) {
+    /*
+    *   Ради инициализации FloatControl - это бредятина!!!!!
+    */
+   /* public static void Sound(String path, boolean reload) {    
+        
         try {
             if (isPlaying && reload) {
                 synchronized (clip) {
@@ -73,7 +78,8 @@ public class Sound {
                 gainControl.setValue(volume);
                 isLoaded = true;
                 clip.setFramePosition(0);
-                maxPosition = clip.getFrameLength();
+                //maxPosition = clip.getFrameLength();
+                maxPosition = clip.getMicrosecondLength();
                 clip.start();
                 isPlaying = true;
                 log.info("Sound played");
@@ -84,7 +90,58 @@ public class Sound {
             log.log(Level.SEVERE, null, ex);
         }
     }
-
+*/
+    /*
+    *   Эта конструкция не работает с wav файлами, ну и ладно.
+    */
+    public static void playMP3file(String filename, boolean reload) {     
+        try {
+            File file = new File(filename);
+            AudioFileFormat baseFileFormat = null;
+            baseFileFormat = AudioSystem.getAudioFileFormat(file);
+            Map properties = baseFileFormat.properties();
+            maxPosition = (long) properties.get("duration");
+        } catch (IOException ex) {
+            log.log(Level.SEVERE, null, ex);
+        } catch (UnsupportedAudioFileException ex) {
+            log.log(Level.SEVERE, null, ex);
+        }
+        
+        try
+        {
+            InputStream fis = new FileInputStream(filename);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            player = new PlayerEx(bis);
+            
+        }
+        catch (Exception e) {
+            log.log(Level.SEVERE, null, e);
+        }
+        
+        // Необходимо узнать закончился-ли потоко для вызова stop!
+        new Thread()
+        {
+            public void run()
+            {
+                try { player.play();
+                
+                }
+                catch (Exception e) {log.log(Level.SEVERE, null, e);}
+            }
+        }.start();
+        
+        isPlaying = true;
+        isMP3 = true;
+    }
+    
+    /*
+    *   Функция хоть и статичная, но только для mp3
+    */
+    public static void pause(boolean pause) {
+        if(isMP3 && isPlaying)
+            player.pause(pause);
+    }
+    
     public static void playStream(InputStream strm, boolean reload) {
         try {
             if (isPlaying && reload) {
@@ -100,12 +157,13 @@ public class Sound {
                 clip = AudioSystem.getClip();
                 clip.open(stream);
                 clip.addLineListener(new Listener());
-                gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(volume);
+                //gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                //gainControl.setValue(volume);
                 isLoaded = true;
                 clip.setFramePosition(0);
                 clip.start();
                 isPlaying = true;
+                isMP3 = false;
                 log.info("Sound played");
             }
 
@@ -115,36 +173,73 @@ public class Sound {
         }
     }
 
-    public static int getPosition(){
-        return clip.getFramePosition();
+    public static long getPosition(){
+        //return clip.getFramePosition();
+        if(!isMP3)
+            return clip.getMicrosecondPosition();
+        else
+            return player.getPosition() * 1000;
     }
     
-    public static void setPosition(int position){
-        clip.setFramePosition(position);
+    public static void setPosition(long position){
+        //clip.setFramePosition(position);
+        clip.setMicrosecondPosition(position);
     }
     
-    public static void setVolume(float gain) {       // Про увеличение громкости 
-        if (gain < 0.0) {
-            gain = 0.0F;                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
-        } else if (gain > 1.0) {
-            gain = 1.0F;
+    public static void setVolume(float volume) {       // Про увеличение громкости 
+        if (volume < 0.0) {
+            volume = 0.0F;                 // http://www.java2s.com/Tutorial/Java/0120__Development/SettingtheVolumeofaSampledAudioPlayer.htm
+        } else if (volume > 1.0) {
+            volume = 1.0F;
         }
-
-        volume = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-        gainControl.setValue(volume);
+        
+        if (AudioSystem.isLineSupported(Port.Info.SPEAKER)) 
+        {
+            try 
+            {
+                Port outline = (Port) AudioSystem.getLine(Port.Info.SPEAKER);
+                outline.open();                
+                FloatControl volumeControl = (FloatControl) outline.getControl(FloatControl.Type.VOLUME);                
+                volumeControl.setValue(volume);
+            } 
+            catch (LineUnavailableException ex) 
+            {
+                System.err.println("source not supported");
+                ex.printStackTrace();
+            }            
+        }
     }
 
     public static float getVolume() {
-        float dB = gainControl.getValue();
-        float gain = (float) (Math.exp(dB / 20.0 * Math.log(10.0)));
-        return gain;
+        //float dB = gainControl.getValue();
+        float volume=0;
+        if (AudioSystem.isLineSupported(Port.Info.SPEAKER)) 
+        {
+            try 
+            {
+                Port outline = (Port) AudioSystem.getLine(Port.Info.SPEAKER);
+                outline.open();                
+                FloatControl volumeControl = (FloatControl) outline.getControl(FloatControl.Type.VOLUME);                
+                volume = volumeControl.getValue();
+            } 
+            catch (LineUnavailableException ex) 
+            {
+                System.err.println("source not supported");
+                ex.printStackTrace();
+            }            
+        }
+        
+        return volume;
     }
 
     public static void stop() {
-        if (isPlaying) {
-            clip.stop();
+        if (!isMP3) {
+            if (isPlaying) {    clip.stop();    }
+            clip.close();
         }
-        clip.close();
+        else if (isMP3) {
+            if(player != null) player.close();
+        }
         isPlaying = false;
     }
 

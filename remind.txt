@@ -1,7 +1,5 @@
 #! Убрать все выводы в консоль!
 
-#! Что делать с mp3? Или оставить wav?
-
 #! Выносить или нет входящий звуковой поток на отдельный сокет?
 
 #!!!! Как то странно, что потоковое воспроизведение заработало!!!!
@@ -9,7 +7,41 @@
 !!!! ВАЖНО !!!! javax.sound работает только с Oracle Java, OpenJava вылетает.
 http://www.webupd8.org/2012/06/how-to-install-oracle-java-7-in-debian.html - Установка Java на кубик.
 
+!!!! ВАЖНО !!!! стандартный javax.sound тормозит с большими wav, 
+	        для воспроизведения mp3 используется JLayer 1.0.1 (Это касается сказок)
+		Помимо всего, для определения продолжительности mp3 надо подключить
+		mp3spi1.9.5 и tritonus_share-0.3.6
+
 #! Для сериализации используется protobuf, для .Net части protobuf-csharp-port
    Реализация не очень, т.к. для для считывания\записи устанавливается Type {read, write}
-   соответственно все параметры считываются\записываются. Необходимо придумать что-либо
+   соответственно все параметры считываются\записываются. Необходимо придумать что-то
    более гибкое. #>
+
+#! VideoStreamin
+   Если отсутствует реальная камера, то для тестов можно запустить
+   виртуальную. 
+   Для этого необходимо загрузить модуль ядра 
+	insmod /home/crtx/work/v4l2loopback.ko
+	chmod 777 /dev/video0
+   Запуск эмулятора 
+	gst-launch -v videotestsrc pattern=snow ! "video/x-raw-yuv,width=640,height=480,framerate=15/1,format=(fourcc)YUY2" ! v4l2sink device=/dev/video0
+   Это эмулирует помехи.
+   Смотри также https://github.com/umlaeute/v4l2loopback/wiki/Gstreamer - всевозможные режими работы.
+
+   Теперь, для передачи видео нужна библиотека v4l4j
+   Исходники находяться в /home/crtx/v4l4j-trunc/
+   ant clean all
+   ant all
+   sudo ant install
+   sudo ant deviceInfo
+   Смотри также - https://code.google.com/p/v4l4j/wiki/GettingStartedOnRPi и https://code.google.com/p/v4l4j/wiki/TestingV4l4j
+   !!!!Блять!!! Для запуска Testv4l4j надо при запуске указывать java -jar -Djava.library.path=/usr/lib/jni/ dist/Testv4l4j.jar
+   там libv4l4j.so
+   Для одной учетки можно так: 
+	LD_LIBRARY_PATH=/usr/lib/jni
+	export LD_LIBRARY_PATH
+
+   Прописать перманент:
+        в etc/bash.bashrc
+	export LD_LIBRARY_PATH=/usr/lib/jni
+!!!! С /etc/ld.so.conf - почему то не работает

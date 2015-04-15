@@ -42,7 +42,7 @@ public class StreamSoundProcess implements Runnable {
         
         try {
         server = new ServerSocket(port);
-        } catch (IOException ex) {
+        } catch (IOException ex) {                      // Надо проверить если DEFAULT_PORT уже используется
             port = ERROR_PORT;
             log.log(Level.SEVERE, null, ex);
         }
